@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UpCours - @yield('title', 'Plateforme de cours en ligne')</title>
-    <meta name="description" content="@yield('meta_description', 'UpCours - La plateforme de cours en ligne pour tous')">
+    <title>UpCours - @yield('title', 'Online Learning Platform')</title>
+    <meta name="description" content="@yield('meta_description', 'UpCours - The online learning platform for everyone')">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/x-icon" href="./assets/icons/book.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -26,14 +27,11 @@
                 <!-- Desktop Navigation Links -->
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
                     <a href="/" class="{{ Request::is('/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                        Accueil
+                        Home
                     </a>
                     <a href="/courses" class="{{ Request::is('courses*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                         Courses
                     </a>
-{{--                    <a href="/quiz" class="{{ Request::is('quiz*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">--}}
-{{--                        Quiz--}}
-{{--                    </a>--}}
                 </div>
             </div>
 
@@ -41,15 +39,15 @@
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
                 <!-- Visitor Links -->
                 <div class="visitor-links flex space-x-4">
-                    <a href="/login" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
-                    <a href="/register" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Inscription</a>
+                    <a href="/login" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                    <a href="/register" class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-2 rounded-md text-sm font-medium">Register</a>
                 </div>
 
                 <!-- Student Links (Hidden by default) -->
                 <div class="student-links hidden space-x-4">
-                    <a href="/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Mon Espace</a>
+                    <a href="/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">My Dashboard</a>
                     <button class="bg-gray-200 p-1 rounded-full text-gray-500 hover:text-gray-700 focus:outline-none">
-                        <span class="sr-only">Voir les notifications</span>
+                        <span class="sr-only">View notifications</span>
                         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                         </svg>
@@ -57,7 +55,7 @@
                     <div class="ml-3 relative">
                         <div>
                             <button type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="user-menu-button">
-                                <span class="sr-only">Ouvrir le menu utilisateur</span>
+                                <span class="sr-only">Open user menu</span>
                                 <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                             </button>
                         </div>
@@ -66,8 +64,8 @@
 
                 <!-- Teacher Links (Hidden by default) -->
                 <div class="teacher-links hidden space-x-4">
-                    <a href="/teacher/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Tableau de bord</a>
-                    <a href="/teacher/courses" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Mes Cours</a>
+                    <a href="/teacher/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    <a href="/teacher/courses" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">My Courses</a>
                 </div>
 
                 <!-- Admin Links (Hidden by default) -->
@@ -79,7 +77,7 @@
             <!-- Mobile Menu Button -->
             <div class="flex items-center sm:hidden">
                 <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-                    <span class="sr-only">Ouvrir le menu principal</span>
+                    <span class="sr-only">Open main menu</span>
                     <!-- Hamburger Icon -->
                     <svg id="mobile-menu-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -96,7 +94,7 @@
         <div id="mobile-menu" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
                 <a href="/" class="{{ Request::is('/') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
-                    Accueil
+                    Home
                 </a>
                 <a href="/courses" class="{{ Request::is('courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                     Courses
@@ -107,8 +105,8 @@
             </div>
             <div class="pt-4 pb-3 border-t border-gray-200">
                 <div class="visitor-links space-y-1">
-                    <a href="/login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Connexion</a>
-                    <a href="/register" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Inscription</a>
+                    <a href="/login" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Login</a>
+                    <a href="/register" class="block px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100">Register</a>
                 </div>
             </div>
         </div>
@@ -122,22 +120,22 @@
 
 <!-- Footer -->
 <footer class="bg-gray-800 text-white">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">\
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
                 <h3 class="text-lg font-semibold mb-4">UpCours</h3>
-                <p class="text-gray-300">La plateforme de cours en ligne pour tous.</p>
+                <p class="text-gray-300">The online learning platform for everyone.</p>
             </div>
             <div>
-                <h3 class="text-lg font-semibold mb-4">Liens rapides</h3>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
                 <ul class="space-y-2">
-                    <li><a href="/" class="text-gray-300 hover:text-white">Accueil</a></li>
-                    <li><a href="/courses" class="text-gray-300 hover:text-white">Cours</a></li>
+                    <li><a href="/" class="text-gray-300 hover:text-white">Home</a></li>
+                    <li><a href="/courses" class="text-gray-300 hover:text-white">Courses</a></li>
                     <li><a href="/quiz" class="text-gray-300 hover:text-white">Quiz</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="text-lg font-semibold mb-4">Ressources</h3>
+                <h3 class="text-lg font-semibold mb-4">Resources</h3>
                 <ul class="space-y-2">
                     <li><a href="#" class="text-gray-300 hover:text-white">Blog</a></li>
                     <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
@@ -147,20 +145,18 @@
             <div>
                 <h3 class="text-lg font-semibold mb-4">Contact</h3>
                 <ul class="space-y-2">
-                    <li class="text-gray-300">contact@upcours.com</li>
-                    <li class="text-gray-300">+33 1 23 45 67 89</li>
+                    <li class="text-gray-300">contact.abdelkebir@gmail.com</li>
+                    <li class="text-gray-300">+212 608229760</li>
                 </ul>
             </div>
         </div>
         <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-300">
-            <p>&copy; 2023 UpCours. Tous droits réservés.</p>
+            <p>&copy; 2023 UpCours. All rights reserved.</p>
         </div>
     </div>
 </footer>
 
-<!-- Scripts -->
 <script>
-    // Toggle mobile menu
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const mobileMenuIcon = document.getElementById('mobile-menu-icon');

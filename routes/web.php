@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +21,8 @@ Route::get('/', function () {
 })->name('home');
 
 
+Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -28,8 +32,25 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+//    ======= auth =======
+    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+//    ========== admin ==========
+    Route::prefix('/admin')->group(function () {
+        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+        Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles');
+        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
+        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+        Route::get('/tags', [TagController::class, 'index'])->name('admin.tags');
+        Route::get('/badges', [BadgeController::class, 'index'])->name('admin.badges');
+        Route::get('/quizzes', [QuizController::class, 'index'])->name('admin.quizzes');
+    });
+
+//    ============ Role ============
+    Route::get('/role', [RoleController::class, 'create'])->name('RoleCreate');
 });
 
 });

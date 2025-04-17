@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\AuthRepositoryInterface;
+use App\Interfaces\RoleRepositoryInterface;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,23 +12,36 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthRepository implements AuthRepositoryInterface
 {
+    protected $RoleRepository;
+
+    public function __construct(RoleRepositoryInterface $RoleRepository)
+    {
+        $this->RoleRepository = $RoleRepository;
+    }
     public function register(array $data)
     {
-        $role = Role::whereRaw('LOWER(role_name) = ?', ['client'])->first();
+        $role = Role::whereRaw('LOWER(role_name) = ?', $data['role'])->first();
 
         if (!$role) {
-            $role = Role::create([
-                'role_name' => 'client',
-                'role_description' => ' '
-            ]);
+            $role = $this->RoleRepository->create($data['role'], "Description of {$data['role']}");
         }
 
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role_id' => $role->id
-        ]);
+        $isPending = false;
+        if($role->role_name == 'teacher')
+        {
+            $isPending = true;
+        }
+
+        $user = new User();
+        $user->name = $data['name'];
+        $user->phone = $data['phone'];
+        $user->photo = "icons/user.png";
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->isPending = $isPending;
+        $user->role()->associate($role);
+
+        $user->save();
     }
 
     public function login(array $data)
@@ -39,11 +53,16 @@ class AuthRepository implements AuthRepositoryInterface
         }
 
         Auth::login($user);
-        return true;
+        return $user;
     }
 
     public function logout()
     {
         Auth::logout();
+    }
+
+    public function profile()
+    {
+        return Auth::user();
     }
 }
