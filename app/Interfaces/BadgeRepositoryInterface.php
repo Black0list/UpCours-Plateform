@@ -2,12 +2,11 @@
 
 namespace App\Interfaces;
 
-interface CourseRepositoryInterface
+interface BadgeRepositoryInterface
 {
-    public function index();
-    public function getById($id);
+    public function all();
+    public function find($id);
     public function create(array $data);
     public function update($id, array $data);
     public function delete($id);
 }
-
