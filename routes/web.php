@@ -21,7 +21,7 @@ Route::get('/', function () {
 })->name('home');
 
 
-Route::get('/courses', [CourseController::class, 'index'])->name('courses');
+Route::get('/courses', [CourseController::class, 'home'])->name('courses');
 
 
 Route::middleware('guest')->group(function () {
@@ -35,19 +35,29 @@ Route::middleware('auth')->group(function () {
 //    ======= auth =======
     Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-
+    Route::post('/courses/create', [CourseController::class, 'create']);
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
-        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
-        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
-        Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles');
-        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
-        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
-        Route::get('/tags', [TagController::class, 'index'])->name('admin.tags');
-        Route::get('/badges', [BadgeController::class, 'index'])->name('admin.badges');
-        Route::get('/quizzes', [QuizController::class, 'index'])->name('admin.quizzes');
+//        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+//        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
+//        Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles');
+//        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
+//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+//        Route::get('/tags', [TagController::class, 'index'])->name('admin.tags');
+//        Route::get('/badges', [BadgeController::class, 'index'])->name('admin.badges');
+//        Route::get('/quizzes', [QuizController::class, 'index'])->name('admin.quizzes');
+//    =========== Course ===========
+
+//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+
+        Route::get('/courses/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
+        Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+        Route::post('/courses/{id}/edit', [CourseController::class, 'update']);
+        Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
     });
+
+
 
 //    ============ Role ============
     Route::get('/role', [RoleController::class, 'create'])->name('RoleCreate');
@@ -67,9 +77,7 @@ Route::middleware('auth')->group(function () {
 //})->name('home');
 //
 //
-//Route::get('/courses', function () {
-//    return view('courses');
-//})->name('courses');
+Route::get('/courses', [CourseController::class, 'home'])->name('courses');
 //
 //Route::get('/users', function () {
 //    return view('admin.users');
@@ -134,8 +142,11 @@ Route::middleware('auth')->group(function () {
 //});
 //
 //
-//Route::prefix('teacher')->group(function () {
-//    Route::get('/dashboard', function () {
-//        return view('teacher.dashboard');
-//    })->name('teacher.dashboard');
-//});
+Route::prefix('teacher')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('teacher.dashboard');
+    })->name('teacher.dashboard');
+    Route::get('/courses/create', function () {
+        return view('teacher.create');
+    })->name('teacher.create');
+});

@@ -28,8 +28,10 @@ class AuthController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|string'
         ]);
 
         $this->auth->register($validated);
@@ -40,19 +42,27 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string',
         ]);
 
-        if (!$this->auth->login($data)) {
+        $user = $this->auth->login($data);
+
+        if (!$user) {
             return redirect()->back()->with('failed', 'The Email or the password is incorrect');
         }
 
-        return redirect('/rooms');
+        return redirect('/profile');
     }
 
     public function logout()
     {
         $this->auth->logout();
-        return redirect('/login');
+        return redirect('/');
+    }
+
+    public function profile()
+    {
+        $user = $this->auth->profile();
+        return view('global.profile', compact('user'));
     }
 }

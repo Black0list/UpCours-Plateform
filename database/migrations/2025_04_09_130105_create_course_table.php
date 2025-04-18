@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
+            $table->string('image');
             $table->string('content');
             $table->decimal('price');
             $table->foreignId('teacher_id')->nullable()->constrained('users')->onDelete('cascade')->cascadeOnUpdate();

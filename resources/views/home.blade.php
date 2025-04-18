@@ -203,7 +203,7 @@
                             </div>
                             <div class="ml-4">
                                 <h4 class="text-lg font-medium text-gray-900">Phone</h4>
-                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                                <p class="text-gray-600">+212 608229760</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -214,7 +214,7 @@
                             </div>
                             <div class="ml-4">
                                 <h4 class="text-lg font-medium text-gray-900">Email</h4>
-                                <p class="text-gray-600">support@upcours.com</p>
+                                <p class="text-gray-600">contact.adbelkebir@gmail.com</p>
                             </div>
                         </div>
                         <div class="flex items-start">

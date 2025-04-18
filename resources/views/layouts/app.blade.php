@@ -120,8 +120,8 @@
 
 <!-- Footer -->
 <footer class="bg-gray-800 text-white">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">\
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <h3 class="text-lg font-semibold mb-4">UpCours</h3>
                 <p class="text-gray-300">The online learning platform for everyone.</p>
@@ -132,14 +132,6 @@
                     <li><a href="/" class="text-gray-300 hover:text-white">Home</a></li>
                     <li><a href="/courses" class="text-gray-300 hover:text-white">Courses</a></li>
                     <li><a href="/quiz" class="text-gray-300 hover:text-white">Quiz</a></li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="text-lg font-semibold mb-4">Resources</h3>
-                <ul class="space-y-2">
-                    <li><a href="#" class="text-gray-300 hover:text-white">Blog</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
-                    <li><a href="#" class="text-gray-300 hover:text-white">Support</a></li>
                 </ul>
             </div>
             <div>
