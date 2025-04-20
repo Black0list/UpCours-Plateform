@@ -17,41 +17,35 @@ class TagController extends Controller
     public function index()
     {
         $tags = $this->tagRepo->all();
-        return view('admin.tags.index', compact('tags'));
+        return view('admin.tags', compact('tags'));
     }
 
-    public function create()
-    {
-        return view('admin.tags.create');
-    }
-
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+        ], [
+            'name.required' => 'The name is required',
         ]);
 
         $this->tagRepo->create($data);
-        return redirect()->route('admin.tags.index');
-    }
 
-    public function edit($id)
-    {
-        $tag = $this->tagRepo->find($id);
-        return view('admin.tags.edit', compact('tag'));
+        return redirect()->route('admin.tags.index')->with('success', 'Tag created successfully');
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'id' => 'required|integer',
         ]);
 
-        $this->tagRepo->update($id, $data);
+        $this->tagRepo->update($data, $id);
+
         return redirect()->route('admin.tags.index');
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $this->tagRepo->delete($id);
         return redirect()->route('admin.tags.index');

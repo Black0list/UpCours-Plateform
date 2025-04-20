@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +36,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 //    ======= auth =======
-    Route::get('/profile', [AuthController::class, 'profile'])->name('profile');
+    Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/courses/create', [CourseController::class, 'create']);
 //    ========== admin ==========
@@ -55,12 +58,34 @@ Route::middleware('auth')->group(function () {
         Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
         Route::post('/courses/{id}/edit', [CourseController::class, 'update']);
         Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+//    ============ Category ============
+        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::post('/category', [CategoryController::class, 'create'])->name('admin.categories.create');
+        Route::put('/category/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/category/{id}', [CategoryController::class, 'delete'])->name('admin.categories.delete');
+//    ============ Tag ============
+        Route::get('/tags', [TagController::class, 'index'])->name('admin.tags.index');
+        Route::post('/tag', [TagController::class, 'create'])->name('admin.tags.create');
+        Route::put('/tag/{id}', [TagController::class, 'update'])->name('admin.tags.update');
+        Route::delete('/tag/{id}', [TagController::class, 'delete'])->name('admin.tags.delete');
+//    ============ admin Dashbaord ============
+        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+//    ============ Role ============
+        Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
+//    ============ User ============
+        Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+    });
+
+
+    Route::prefix('teacher')->group(function () {
+        Route::get('/dashboard', function () {
+            return view('teacher.dashboard');
+        })->name('teacher.dashboard');
+        Route::get('/courses/create',[CourseController::class, 'createForm'])->name('teacher.courses.create');
     });
 
 
 
-//    ============ Role ============
-    Route::get('/role', [RoleController::class, 'create'])->name('RoleCreate');
 });
 
 });
@@ -142,11 +167,4 @@ Route::get('/courses', [CourseController::class, 'home'])->name('courses');
 //});
 //
 //
-Route::prefix('teacher')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('teacher.dashboard');
-    })->name('teacher.dashboard');
-    Route::get('/courses/create', function () {
-        return view('teacher.create');
-    })->name('teacher.create');
-});
+

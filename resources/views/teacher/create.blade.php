@@ -27,12 +27,9 @@
                         <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
                         <div class="mt-1">
                             <select id="category_id" name="category_id" required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
-                                <option value="">Select a category</option>
-                                <option value="1">Web Development</option>
-                                <option value="2">Data Science</option>
-                                <option value="3">Mobile Development</option>
-                                <option value="4">Design</option>
-                                <option value="5">Business</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

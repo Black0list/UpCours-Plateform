@@ -17,41 +17,38 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryRepo->all();
-        return view('admin.categories.index', compact('categories'));
+        return view('admin.categories', compact('categories'));
     }
 
-    public function create()
-    {
-        return view('admin.categories.create');
-    }
-
-    public function store(Request $request)
+    public function create(Request $request)
     {
         $data = $request->validate([
-            'category_name' => 'required|string|max:255'
+            'name' => 'required|string',
+            'description' => 'required|string',
+        ],
+        [
+            'name.required' => "the name is required",
+            'description.required' => "the description is required",
         ]);
 
         $this->categoryRepo->create($data);
-        return redirect()->route('admin.categories.index');
-    }
 
-    public function edit($id)
-    {
-        $category = $this->categoryRepo->find($id);
-        return view('admin.categories.edit', compact('category'));
+        return redirect()->route('admin.categories.index')->with('success', 'category created successfully');
     }
 
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-            'category_name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
+            'id' => 'required|integer'
         ]);
 
-        $this->categoryRepo->update($id, $data);
+        $this->categoryRepo->update($data, $id);
         return redirect()->route('admin.categories.index');
     }
 
-    public function destroy($id)
+    public function delete($id)
     {
         $this->categoryRepo->delete($id);
         return redirect()->route('admin.categories.index');

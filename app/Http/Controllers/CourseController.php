@@ -7,6 +7,7 @@ use App\Interfaces\QuestionRepositoryInterface;
 use App\Interfaces\QuizRepositoryInterface;
 use App\Interfaces\ChoiceRepositoryInterface;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -37,6 +38,12 @@ class CourseController extends Controller
     {
         $courses = $this->courseRepository->index();
         return view('admin.courses.index', compact('courses'));
+    }
+
+    public function createForm()
+    {
+        $categories = Category::all();
+        return view('teacher.create', compact('categories'));
     }
 
     public function create(Request $request)

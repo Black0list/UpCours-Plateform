@@ -19,19 +19,24 @@ class TagRepository implements TagRepositoryInterface
 
     public function create(array $data)
     {
-        return Tag::create($data);
+        $tag = new Tag();
+        $tag->name = $data['name'];
+
+        $tag->save();
+
+        return $tag;
     }
 
-    public function update($id, array $data)
+    public function update(array $data, $id)
     {
-        $tag = $this->find($id);
+        $tag = Tag::find($id);
         $tag->update($data);
         return $tag;
     }
 
     public function delete($id)
     {
-        $tag = $this->find($id);
-        return $tag->delete();
+        $tag = Tag::find($id);
+        $tag->delete();
     }
 }

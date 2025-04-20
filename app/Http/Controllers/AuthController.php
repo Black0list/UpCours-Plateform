@@ -60,9 +60,4 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function profile()
-    {
-        $user = $this->auth->profile();
-        return view('global.profile', compact('user'));
-    }
 }

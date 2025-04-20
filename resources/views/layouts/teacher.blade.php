@@ -60,6 +60,38 @@
         .sidebar-item:hover {
             background-color: rgba(22, 101, 52, 0.6);
         }
+
+        /* Form elements styling */
+        input, select, textarea {
+            padding: 0.625rem 0.75rem;
+            border-width: 1px;
+            border-color: #d1d5db;
+            border-radius: 0.375rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #16a34a;
+            color: white;
+            border: 1px solid #15803d;
+        }
+
+        .btn-primary:hover {
+            background-color: #15803d;
+        }
     </style>
 
     @yield('styles')
@@ -88,9 +120,10 @@
             <!-- User Profile -->
             <div class="p-4 border-b border-primary-700">
                 <div class="flex items-center space-x-3">
-                    <img class="h-10 w-10 rounded-full border-2 border-primary-300" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Profile">
+                    <img class="h-10 w-10 rounded-full border-2 border-primary-300" src={{ url('storage/'.Auth::user()->photo) }} alt="Profile">
                     <div>
-                        <h3 class="text-white font-medium">John Doe</h3>
+                        <h3 class="text-white font-medium">{{ Auth::user()->name }}</h3>
+                        <p class="text-primary-300 text-sm">{{ Auth::user()->role->role_name }}</p>
                     </div>
                 </div>
             </div>
@@ -127,6 +160,10 @@
                                 <i class="fas fa-plus-circle mr-3 text-primary-300 w-5 text-center"></i>
                                 Create Course
                             </a>
+                            <a href="/teacher/quiz" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
+                                <i class="fas fa-question-circle mr-3 text-primary-300 w-5 text-center"></i>
+                                Quizzes
+                            </a>
                         </div>
                     </div>
 
@@ -138,6 +175,22 @@
                             <a href="/teacher/stats" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
                                 <i class="fas fa-chart-bar mr-3 text-primary-300 w-5 text-center"></i>
                                 Statistics
+                            </a>
+                            <a href="/teacher/earnings" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
+                                <i class="fas fa-dollar-sign mr-3 text-primary-300 w-5 text-center"></i>
+                                Earnings
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h2 class="px-3 text-xs font-semibold text-primary-300 uppercase tracking-wider">
+                            Support
+                        </h2>
+                        <div class="mt-3 space-y-1">
+                            <a href="/teacher/help" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
+                                <i class="fas fa-question-circle mr-3 text-primary-300 w-5 text-center"></i>
+                                Help Center
                             </a>
                         </div>
                     </div>
@@ -173,13 +226,20 @@
                     <div class="flex items-center space-x-4">
                         <!-- User dropdown -->
                         <div class="relative">
-                            <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button">
+                            <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="sr-only">Open user menu</span>
-                                <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                <span class="hidden md:block text-gray-700">John Doe</span>
+                                <img class="h-8 w-8 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="userPhoto" />
+                                <span class="hidden md:block text-gray-700">{{ Auth::user()->name }}</span>
                                 <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                             </button>
-                            <!-- User dropdown menu would go here -->
+                            <!-- User dropdown menu -->
+                            <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10" id="user-dropdown-menu" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                                <div class="px-4 py-2 border-b border-gray-100">
+                                    <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                                </div>
+                                <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
+                                <a href="/logout" class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100" role="menuitem">Logout</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -201,6 +261,10 @@
     const sidebar = document.getElementById('sidebar');
     const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
+    // User dropdown functionality
+    const userMenuButton = document.getElementById('user-menu-button');
+    const userDropdownMenu = document.getElementById('user-dropdown-menu');
+
     // Open sidebar on mobile
     openSidebar.addEventListener('click', () => {
         sidebar.classList.remove('-translate-x-full');
@@ -221,6 +285,20 @@
         sidebarBackdrop.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     });
+
+    // Toggle user dropdown menu
+    if (userMenuButton && userDropdownMenu) {
+        userMenuButton.addEventListener('click', () => {
+            userDropdownMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!userMenuButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                userDropdownMenu.classList.add('hidden');
+            }
+        });
+    }
 
     // Handle window resize
     window.addEventListener('resize', () => {

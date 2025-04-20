@@ -61,8 +61,4 @@ class AuthRepository implements AuthRepositoryInterface
         Auth::logout();
     }
 
-    public function profile()
-    {
-        return Auth::user();
-    }
 }
