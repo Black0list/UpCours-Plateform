@@ -40,14 +40,12 @@
                             <div class="mb-6">
                                 <h3 class="text-sm font-medium text-gray-900 mb-3">Categories</h3>
                                 @if(isset($categories) && count($categories) > 0)
-                                    @foreach($categories as $category)
-                                        <div class="flex items-center mt-2">
-                                            <input id="category-{{ $category->id }}" name="categories[]" value="{{ $category->id }}" type="checkbox"
-                                                   {{ in_array($category->id, request('categories', [])) ? 'checked' : '' }}
-                                                   class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary">
-                                            <label for="category-{{ $category->id }}" class="ml-2 text-sm text-gray-700">{{ $category->name }}</label>
-                                        </div>
-                                    @endforeach
+                                    <select name="category_id" id="category"
+                                            class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
                                 @else
                                     <div class="text-sm text-gray-500 italic">No categories available</div>
                                 @endif
@@ -135,15 +133,15 @@
                                         <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 h-14">{{ $course->title }}</h3>
                                         <p class="text-gray-600 text-sm mb-4 flex-grow line-clamp-3 h-18">{{ Str::limit($course->description, 120) }}</p>
                                         <div class="mt-auto">
-{{--                                            @if(isset($course->teacher))--}}
-{{--                                                <div class="mb-4 flex items-center text-sm text-gray-500">--}}
-{{--                                                    <img src="{{ $course->teacher->profile_image ?? 'https://ui-avatars.com/api/?name=' . urlencode($course->teacher->name ?? 'Teacher') }}" alt="Teacher" class="w-6 h-6 rounded-full mr-2">--}}
-{{--                                                    <span>{{ $course->teacher->name ?? 'Instructor' }}</span>--}}
-{{--                                                </div>--}}
-{{--                                            @endif--}}
+                                            @if(isset($course->teacher))
+                                                <div class="mb-4 flex items-center text-sm text-gray-500 pt-3 border-t border-gray-100">
+                                                    <img src={{ url('/storage/'.$course->teacher->photo)  }} alt="Teacher" class="w-6 h-6 rounded-full mr-2">
+                                                    <span class="text-green-900 font-bold">{{ $course->teacher->name ?? 'Instructor' }}</span>
+                                                </div>
+                                            @endif
                                             <div class="flex justify-between items-center pt-3 border-t border-gray-100">
                                                 <span class="text-xl font-bold text-gray-900">{{ number_format($course->price, 2) }} €</span>
-                                                <a href="/courses/{{ $course->id }}" class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors duration-200 font-medium text-sm">
+                                                <a href="/course/{{ $course->id }}" class="inline-flex items-center px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary/20 transition-colors duration-200 font-medium text-sm">
                                                     View Course
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
                                                         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />

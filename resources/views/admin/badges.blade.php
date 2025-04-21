@@ -27,6 +27,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Icon</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Earners</th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                             </thead>
@@ -37,6 +38,7 @@
                                         <img src={{ url('/storage/'.$badge->icon) }} alt="icon" class="w-8 h-8">
                                     </td>
                                     <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $badge->badge_name }}</td>
+                                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $badge->earners()->count() }}</td>
                                     <td class="px-6 py-4 text-right flex justify-end gap-2">
                                         <button title="Edit" onclick="editBadge(this)"
                                                 data-id="{{ $badge->id }}"

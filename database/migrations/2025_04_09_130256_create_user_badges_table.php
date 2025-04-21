@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_badges', function (Blueprint $table) {
-            $table->foreignId('student_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
+        Schema::create('badge_user', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('badge_id')->constrained('badges')->onDelete('cascade')->cascadeOnUpdate();
             $table->timestamps();
         });

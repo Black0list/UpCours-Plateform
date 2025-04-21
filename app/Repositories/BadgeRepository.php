@@ -10,7 +10,7 @@ class BadgeRepository implements BadgeRepositoryInterface
 {
     public function all()
     {
-        return Badge::all();
+        return Badge::with('earners')->get();
     }
 
     public function create(array $data)

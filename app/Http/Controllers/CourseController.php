@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\CategoryRepositoryInterface;
 use App\Interfaces\CourseRepositoryInterface;
 use App\Interfaces\QuestionRepositoryInterface;
 use App\Interfaces\QuizRepositoryInterface;
@@ -16,21 +17,23 @@ class CourseController extends Controller
     protected $quizRepository;
     protected $choiceRepository;
     protected $questionRepository;
+    protected $categoryRepository;
 
-    public function __construct(CourseRepositoryInterface $courseRepository, QuizRepositoryInterface $quizRepository, ChoiceRepositoryInterface $choiceRepository, QuestionRepositoryInterface $questionRepository)
+    public function __construct(CourseRepositoryInterface $courseRepository, QuizRepositoryInterface $quizRepository, ChoiceRepositoryInterface $choiceRepository, QuestionRepositoryInterface $questionRepository, CategoryRepositoryInterface $categoryRepository)
     {
         $this->courseRepository = $courseRepository;
         $this->quizRepository = $quizRepository;
         $this->choiceRepository = $choiceRepository;
         $this->questionRepository = $questionRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     // Show courses to public
     public function home()
     {
         $courses = $this->courseRepository->index();
-//        dd($courses);
-        return view('global.courses', compact('courses'));
+        $categories = $this->categoryRepository->all();
+        return view('global.courses', compact('courses', 'categories'));
     }
 
     // Admin index
@@ -99,7 +102,7 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = $this->courseRepository->getById($id);
-        return view('admin.courses.show', compact('course'));
+        return view('global.course', compact('course'));
     }
 
     // Edit form

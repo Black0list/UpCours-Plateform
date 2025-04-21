@@ -40,13 +40,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/courses/create', [CourseController::class, 'create']);
+    Route::get('/course/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
 
         Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
 
-        Route::get('/courses/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
-        Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
+        Route::get('/course/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
         Route::post('/courses/{id}/edit', [CourseController::class, 'update']);
         Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
 //    ============ Category ============

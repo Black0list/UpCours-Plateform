@@ -126,9 +126,11 @@
                         <!-- User Profile Dropdown -->
                         <div class="relative ml-3">
                             <div>
-                                <button class="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="w-8 h-8 rounded-full" src={{ url('/storage/'.Auth::user()->photo) }} alt="UserImage">
+                                    <img class="h-8 w-8 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="userPhoto" />
+                                    <span class="hidden md:block text-gray-700">{{ Auth::user()->name }}</span>
+                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                                 </button>
                             </div>
 

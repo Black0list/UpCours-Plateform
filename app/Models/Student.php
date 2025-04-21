@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends User
 {
+    protected $table = 'users';
     public function courses()
     {
         return $this->belongsToMany(Course::class);

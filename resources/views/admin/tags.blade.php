@@ -34,7 +34,7 @@
                         @foreach($tags as $tag)
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $tag->name }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500">{{ $tag->name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500">{{ $tag->courses()->count() }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-2">
                                     <button
                                         title="Edit"
@@ -116,7 +116,6 @@
             const form = document.getElementById('tag-form');
             form.action = '{{ route('admin.tags.create') }}';
 
-            // Remove method override if exists
             const methodInput = form.querySelector('input[name="_method"]');
             if (methodInput) {
                 methodInput.remove();

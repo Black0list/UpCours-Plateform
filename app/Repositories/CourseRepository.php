@@ -17,7 +17,7 @@ class CourseRepository implements CourseRepositoryInterface
 
     public function getById($id)
     {
-        return Course::with(['category', 'teacher'])->findOrFail($id);
+        return Course::find($id);
     }
 
     public function create(array $data)
