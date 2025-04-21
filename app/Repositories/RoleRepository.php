@@ -14,10 +14,24 @@ class RoleRepository implements RoleRepositoryInterface
         return $roles;
     }
 
-    public function create(string $name) : Role
+    public function create(string $name)
     {
         return Role::create([
             'role_name' => $name
         ]);
+    }
+
+    public function update($name, $id)
+    {
+        $Role = Role::find($id);
+        $Role->role_name = $name;
+
+        $Role->save();
+    }
+
+    public function delete($id)
+    {
+        $Role = Role::find($id);
+        $Role->delete();
     }
 }

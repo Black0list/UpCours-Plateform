@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
@@ -41,18 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/courses/create', [CourseController::class, 'create']);
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
-//        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
-//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
-//        Route::get('/users', [UserController::class, 'index'])->name('admin.users');
-//        Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles');
-//        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
-//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
-//        Route::get('/tags', [TagController::class, 'index'])->name('admin.tags');
-//        Route::get('/badges', [BadgeController::class, 'index'])->name('admin.badges');
-//        Route::get('/quizzes', [QuizController::class, 'index'])->name('admin.quizzes');
-//    =========== Course ===========
 
-//        Route::get('/courses', [CourseController::class, 'index'])->name('admin.courses');
+        Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
 
         Route::get('/courses/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
         Route::get('/courses/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
@@ -68,10 +59,19 @@ Route::middleware('auth')->group(function () {
         Route::post('/tag', [TagController::class, 'create'])->name('admin.tags.create');
         Route::put('/tag/{id}', [TagController::class, 'update'])->name('admin.tags.update');
         Route::delete('/tag/{id}', [TagController::class, 'delete'])->name('admin.tags.delete');
-//    ============ admin Dashbaord ============
-        Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
+
+//    ============ Badge ============
+        Route::get('/badges', [BadgeController::class, 'index'])->name('admin.badges.index');
+        Route::post('/badge', [BadgeController::class, 'create'])->name('admin.badges.create');
+        Route::put('/badge/{id}', [BadgeController::class, 'update'])->name('admin.badges.update');
+        Route::delete('/badge/{id}', [BadgeController::class, 'delete'])->name('admin.badges.delete');
+
 //    ============ Role ============
         Route::get('/roles', [RoleController::class, 'index'])->name('admin.roles.index');
+        Route::post('/role', [RoleController::class, 'create'])->name('admin.roles.create');
+        Route::put('/role/{id}', [RoleController::class, 'update'])->name('admin.roles.update');
+        Route::delete('/role/{id}', [RoleController::class, 'delete'])->name('admin.roles.delete');
+
 //    ============ User ============
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
     });

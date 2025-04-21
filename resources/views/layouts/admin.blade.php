@@ -70,6 +70,7 @@
             </div>
             <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
                 <div class="flex flex-col flex-grow space-y-1">
+
                     <!-- Categories Link -->
                     <a href="/admin/categories" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/categories*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
                         <i class="fas fa-folder-open w-5 h-5 mr-3 {{ request()->is('admin/categories*') ? 'text-white' : 'text-primary-500' }}"></i>
@@ -127,16 +128,15 @@
                             <div>
                                 <button class="flex items-center max-w-xs text-sm bg-white rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="w-8 h-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                    <img class="w-8 h-8 rounded-full" src={{ url('/storage/'.Auth::user()->photo) }} alt="UserImage">
                                 </button>
                             </div>
 
                             <!-- User Dropdown Menu (Hidden by default) -->
                             <div class="absolute right-0 z-10 hidden w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" id="user-dropdown" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                 <div class="py-1" role="none">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">Logout</a>
+                                    <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                                    <a href="/logout" class="block px-4 py-2 text-sm text-red-700 hover:bg-red-100" role="menuitem" tabindex="-1" id="user-menu-item-2">Logout</a>
                                 </div>
                             </div>
                         </div>
@@ -168,17 +168,15 @@
             <div class="pt-4 pb-3 border-t border-gray-200">
                 <div class="flex items-center px-5">
                     <div class="flex-shrink-0">
-                        <img class="w-10 h-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                        <img class="w-10 h-10 rounded-full" src={{ url('/storage/'.Auth::user()->photo) }} alt="">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">Admin User</div>
-                        <div class="text-sm font-medium text-gray-500">admin@upcours.com</div>
+                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
                     </div>
                 </div>
                 <div class="px-2 mt-3 space-y-1">
-                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md">Your Profile</a>
-                    <a href="#" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md">Settings</a>
-                    <a href="/logout" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md">Logout</a>
+                    <a href="/profile" class="block px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md">Your Profile</a>
+                    <a href="/logout" class="block px-3 py-2 text-base font-medium text-red-700 hover:bg-red-100 rounded-md">Logout</a>
                 </div>
             </div>
         </div>
