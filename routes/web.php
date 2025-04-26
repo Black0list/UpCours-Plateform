@@ -4,6 +4,7 @@ use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -39,16 +40,15 @@ Route::middleware('auth')->group(function () {
 //    ======= auth =======
     Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/courses/create', [CourseController::class, 'create']);
-    Route::get('/course/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
+    Route::post('/enroll', [UserController::class, 'enroll'])->name('enroll');
+    Route::get('/quiz/{id}', [QuizController::class, 'findQuizById'])->name('quiz');
+    Route::post('/quizSubmit/{id}', [QuizController::class, 'quizSubmit'])->name('quizSubmit');
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
-
+        Route::get('/validation', function () { return view('admin.validation'); })->name('admin.validation');
+        Route::post('/validation', [UserController::class, 'validation'])->name('admin.pendingTeachers');
+        Route::post('/validate', [UserController::class, 'validateTeacher'])->name('admin.teacher.validate');
         Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
-
-        Route::get('/course/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
-        Route::post('/courses/{id}/edit', [CourseController::class, 'update']);
-        Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
 //    ============ Category ============
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::post('/category', [CategoryController::class, 'create'])->name('admin.categories.create');
@@ -78,11 +78,17 @@ Route::middleware('auth')->group(function () {
 
 
     Route::prefix('teacher')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('teacher.dashboard');
-        })->name('teacher.dashboard');
-        Route::get('/courses/create',[CourseController::class, 'createForm'])->name('teacher.courses.create');
+        Route::get('/dashboard', function () { return view('teacher.dashboard'); })->name('teacher.dashboard');
+        Route::get('/courses',[CourseController::class, 'main'])->name('teacher.courses.main');
+
+        Route::get('/course',[CourseController::class, 'createForm'])->name('teacher.courses.createForm');
+        Route::get('/course/{id}',[CourseController::class, 'updateForm'])->name('teacher.courses.updateForm');
+        Route::post('/course', [CourseController::class, 'create'])->name('teacher.courses.create');
+        Route::put('/course/{id}',[CourseController::class, 'update'])->name('teacher.courses.update');
+        Route::delete('/course/{id}',[CourseController::class, 'delete'])->name('teacher.courses.delete');
     });
+
+    Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
 
 
 

@@ -27,13 +27,14 @@ class AuthRepository implements AuthRepositoryInterface
         }
 
         $isPending = false;
-        if($role->role_name == 'teacher')
+        if(strtolower($role->role_name) == 'teacher')
         {
             $isPending = true;
         }
 
         $user = new User();
-        $user->name = $data['name'];
+        $user->firstname = $data['firstname'];
+        $user->lastname = $data['lastname'];
         $user->phone = $data['phone'];
         $user->photo = "icons/user.png";
         $user->email = $data['email'];

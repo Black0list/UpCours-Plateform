@@ -28,11 +28,19 @@
                     @csrf
 
                     <div>
-                        <label for="name" class="block text-sm font-medium text-gray-700">Full name</label>
+                        <label for="firstname" class="block text-sm font-medium text-gray-700">First name</label>
                         <div class="mt-1">
-                            <input id="name" name="name" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
+                            <input id="firstname" name="firstname" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
-                        <div id="name-error" class="text-sm text-red-600 mt-1"></div>
+                        <div id="firstname-error" class="text-sm text-red-600 mt-1"></div>
+                    </div>
+
+                    <div>
+                        <label for="lastname" class="block text-sm font-medium text-gray-700">Last name</label>
+                        <div class="mt-1">
+                            <input id="lastname" name="lastname" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
+                        </div>
+                        <div id="lastname-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 
                     <div>
@@ -105,7 +113,8 @@
             const form = document.querySelector('form');
 
             form.addEventListener('submit', function (e) {
-                const name = form.querySelector('#name').value.trim();
+                const firstname = form.querySelector('#firstname').value.trim();
+                const lastname = form.querySelector('#lastname').value.trim();
                 const phone = form.querySelector('#phone').value.trim();
                 const email = form.querySelector('#email').value.trim();
                 const password = form.querySelector('#password').value;
@@ -115,7 +124,8 @@
 
                 let errors = [];
 
-                document.querySelector('#name-error').innerHTML = '';
+                document.querySelector('#firstname-error').innerHTML = '';
+                document.querySelector('#lastname-error').innerHTML = '';
                 document.querySelector('#phone-error').innerHTML = '';
                 document.querySelector('#email-error').innerHTML = '';
                 document.querySelector('#password-error').innerHTML = '';
@@ -123,7 +133,20 @@
                 document.querySelector('#role-error').innerHTML = '';
                 document.querySelector('#terms-error').innerHTML = '';
 
-                if (name.length < 3) errors.push('Name must be at least 3 characters.');
+                const nameRegex = /^[A-Za-z\s\-']+$/;
+
+                if (firstname.length < 3) {
+                    errors.push('Firstname must be at least 3 characters.');
+                } else if (!nameRegex.test(firstname)) {
+                    errors.push('Firstname must contain only letters.');
+                }
+
+                if (lastname.length < 3) {
+                    errors.push('Lastname must be at least 3 characters.');
+                } else if (!nameRegex.test(lastname)) {
+                    errors.push('Lastname must contain only letters.');
+                }
+
                 if (phone.replace(/\D/g, '').length < 10) errors.push('Phone number must contain at least 10 digits.');
                 if (!/^\S+@\S+\.\S+$/.test(email)) errors.push('Email is not valid.');
                 if (password.length < 6) errors.push('Password must be at least 6 characters.');
@@ -134,10 +157,12 @@
                 if (errors.length > 0) {
                     e.preventDefault();
                     errors.forEach(error => {
-                        if (error.includes('Name')) document.querySelector('#name-error').innerText = error;
+                        if (error.includes('First')) document.querySelector('#firstname-error').innerText = error;
+                        if (error.includes('Last')) document.querySelector('#lastname-error').innerText = error;
                         if (error.includes('Phone')) document.querySelector('#phone-error').innerText = error;
                         if (error.includes('Email')) document.querySelector('#email-error').innerText = error;
-                        if (error.includes('Password')) document.querySelector('#password-error').innerText = error;
+                        if (error.includes('Password') && !error.includes('match')) document.querySelector('#password-error').innerText = error;
+                        if (error.includes('match')) document.querySelector('#password-confirmation-error').innerText = error;
                         if (error.includes('role')) document.querySelector('#role-error').innerText = error;
                         if (error.includes('terms')) document.querySelector('#terms-error').innerText = error;
                     });

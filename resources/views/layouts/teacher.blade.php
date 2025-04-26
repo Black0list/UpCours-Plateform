@@ -33,17 +33,6 @@
     </script>
 
     <style>
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
         /* Sidebar transition */
         .sidebar-transition {
             transition: transform 0.3s ease-in-out, width 0.3s ease-in-out, margin-left 0.3s ease-in-out;
@@ -121,7 +110,7 @@
                 <div class="flex items-center space-x-3">
                     <img class="h-10 w-10 rounded-full border-2 border-primary-300" src={{ url('storage/'.Auth::user()->photo) }} alt="Profile">
                     <div>
-                        <h3 class="text-white font-medium">{{ Auth::user()->name }}</h3>
+                        <h3 class="text-white font-medium">{{ Auth::user()->full_name }}</h3>
                         <p class="text-primary-300 text-sm">{{ Auth::user()->role->role_name }}</p>
                     </div>
                 </div>
@@ -147,17 +136,13 @@
                             Content
                         </h2>
                         <div class="mt-3 space-y-1">
-                            <a href="/teacher/courses" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
+                            <a class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item" href={{ route("teacher.courses.main") }}>
                                 <i class="fas fa-book mr-3 text-primary-300 w-5 text-center"></i>
                                 My Courses
                             </a>
-                            <a href="/teacher/courses/create" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
+                            <a  class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item" href={{ route("teacher.courses.createForm") }} >
                                 <i class="fas fa-plus-circle mr-3 text-primary-300 w-5 text-center"></i>
                                 Create Course
-                            </a>
-                            <a href="/teacher/quiz" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-white sidebar-item">
-                                <i class="fas fa-question-circle mr-3 text-primary-300 w-5 text-center"></i>
-                                Quizzes
                             </a>
                         </div>
                     </div>
@@ -196,7 +181,7 @@
                             <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                 <span class="sr-only">Open user menu</span>
                                 <img class="h-8 w-8 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="userPhoto" />
-                                <span class="hidden md:block text-gray-700">{{ Auth::user()->name }}</span>
+                                <span class="hidden md:block text-gray-700">{{ Auth::user()->full_name }}</span>
                                 <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                             </button>
                             <!-- User dropdown menu -->

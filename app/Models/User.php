@@ -18,7 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'lastname',
         'phone',
         'photo',
         'email',
@@ -54,4 +55,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function getFullNameAttribute()
+    {
+        return "{$this->firstname} {$this->lastname}";
+    }
+
 }

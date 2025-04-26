@@ -9,7 +9,7 @@ class Student extends User
     protected $table = 'users';
     public function courses()
     {
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class, 'user_course', 'user_id', 'course_id');
     }
 
     public function certificates()

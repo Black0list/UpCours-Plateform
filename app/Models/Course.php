@@ -22,7 +22,7 @@ class Course extends Model
 
     public function subscribers()
     {
-        return $this->hasMany(Student::class);
+        return $this->belongsToMany(Student::class, 'user_course', 'course_id', 'user_id');
     }
 
     public function certificates()
