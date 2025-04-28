@@ -35,10 +35,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-//    ======= auth =======
+//    ======= auth & public Route =======
     Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/enroll', [UserController::class, 'enroll'])->name('enroll');
+    Route::get('/myCourses', [CourseController::class, 'myCourses'])->name('student.courses');
     Route::get('/course/{courseId}/quiz/{quizId}', [QuizController::class, 'findQuizById'])->name('quiz');
     Route::post('/quizSubmit/{id}', [QuizController::class, 'quizSubmit'])->name('quizSubmit');
 //    ========== admin ==========
