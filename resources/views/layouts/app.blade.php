@@ -74,7 +74,9 @@
                 @auth
                     <div class="flex items-center space-x-4">
                         {{-- Role-specific links --}}
-                        @if(strtolower(Auth::user()->role->role_name) === 'teacher')
+                        @if(strtolower(Auth::user()->role->role_name) === 'student')
+                            <a href="/myCourses" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">My Courses</a>
+                        @elseif(strtolower(Auth::user()->role->role_name) === 'teacher')
                             <a href="/teacher/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                             <a href="/teacher/courses" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">My Courses</a>
                         @elseif(strtolower(Auth::user()->role->role_name) === 'admin')
@@ -141,7 +143,11 @@
             @auth
                 {{-- Role-specific mobile links --}}
                 <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
-                    @if(strtolower(Auth::user()->role->role_name) === 'teacher')
+                    @if(strtolower(Auth::user()->role->role_name) === 'student')
+                        <a href="/myCourses" class="{{ Request::is('/myCourses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
+                            My Courses
+                        </a>
+                    @elseif(strtolower(Auth::user()->role->role_name) === 'teacher')
                         <a href="/teacher/dashboard" class="{{ Request::is('teacher/dashboard*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                             Dashboard
                         </a>
@@ -266,7 +272,6 @@
                     mobileMenuCloseIcon.classList.toggle('hidden', isOpen);
                 }
 
-                // Close mobile profile dropdown if open
                 if (mobileProfileDropdown) {
                     mobileProfileDropdown.classList.add('hidden');
                 }

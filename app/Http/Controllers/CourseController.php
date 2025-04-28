@@ -10,6 +10,7 @@ use App\Interfaces\QuizRepositoryInterface;
 use App\Interfaces\ChoiceRepositoryInterface;
 
 use App\Interfaces\TagRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\Course;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -24,8 +25,9 @@ class CourseController extends Controller
     protected $categoryRepository;
     protected $tagRepository;
     protected $badgeRepository;
+    protected $userRepository;
 
-    public function __construct(CourseRepositoryInterface $courseRepository, QuizRepositoryInterface $quizRepository, ChoiceRepositoryInterface $choiceRepository, QuestionRepositoryInterface $questionRepository, CategoryRepositoryInterface $categoryRepository, TagRepositoryInterface $tagRepository, BadgeRepositoryInterface $badgeRepository)
+    public function __construct(CourseRepositoryInterface $courseRepository, QuizRepositoryInterface $quizRepository, ChoiceRepositoryInterface $choiceRepository, QuestionRepositoryInterface $questionRepository, CategoryRepositoryInterface $categoryRepository, TagRepositoryInterface $tagRepository, BadgeRepositoryInterface $badgeRepository, UserRepositoryInterface $userRepository)
     {
         $this->courseRepository = $courseRepository;
         $this->quizRepository = $quizRepository;
@@ -34,6 +36,14 @@ class CourseController extends Controller
         $this->categoryRepository = $categoryRepository;
         $this->tagRepository = $tagRepository;
         $this->badgeRepository = $badgeRepository;
+        $this->userRepository = $userRepository;
+    }
+
+    public function myCourses()
+    {
+        $student = $this->userRepository->findStudent(Auth::id());
+        $courses = $student->courses;
+        return view('global.mycourses', compact('courses'));
     }
 
     // Show courses to public
