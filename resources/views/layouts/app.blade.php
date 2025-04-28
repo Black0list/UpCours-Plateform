@@ -196,6 +196,28 @@
 
 <!-- Main Content -->
 <main class="flex-grow">
+    @if (session('success'))
+        <div id="successAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Success! </strong>
+            <span class="block sm:inline">{{ session('success') }}</span>
+            <button onclick="document.getElementById('successAlert').style.display='none'"
+                    class="absolute top-0 right-0 mt-2 mr-2 text-green-700 font-bold text-xl leading-none focus:outline-none">
+                ×
+            </button>
+        </div>
+    @endif
+
+    @if (session('failed'))
+        <div id="failedAlert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Error! </strong>
+            <span class="block sm:inline">{{ session('failed') }}</span>
+            <button onclick="document.getElementById('failedAlert').style.display='none'"
+                    class="absolute top-0 right-0 mt-2 mr-2 text-red-700 font-bold text-xl leading-none focus:outline-none">
+                ×
+            </button>
+        </div>
+    @endif
+
     @yield('content')
 </main>
 

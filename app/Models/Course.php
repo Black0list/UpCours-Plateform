@@ -22,7 +22,7 @@ class Course extends Model
 
     public function subscribers()
     {
-        return $this->belongsToMany(Student::class, 'user_course', 'course_id', 'user_id');
+        return $this->belongsToMany(Student::class, 'user_course', 'course_id', 'user_id')->withTimestamps();
     }
 
     public function certificates()
@@ -37,7 +37,7 @@ class Course extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 
     public function quizzes()

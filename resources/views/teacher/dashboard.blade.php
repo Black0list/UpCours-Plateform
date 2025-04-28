@@ -4,7 +4,7 @@
 @section('page-title', 'Dashboard')
 
 @section('content')
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
         <!-- Total Courses -->
         <div class="bg-white rounded-lg shadow-sm p-6 flex items-center">
             <div class="rounded-full bg-primary-100 p-3 mr-4">
@@ -12,7 +12,7 @@
             </div>
             <div>
                 <h3 class="text-gray-500 text-sm">Total Courses</h3>
-                <p class="text-2xl font-bold">12</p>
+                <p class="text-2xl font-bold">{{ $stats['courses'] }}</p>
             </div>
         </div>
 
@@ -23,7 +23,7 @@
             </div>
             <div>
                 <h3 class="text-gray-500 text-sm">Total Students</h3>
-                <p class="text-2xl font-bold">248</p>
+                <p class="text-2xl font-bold">{{ $stats['students'] }}</p>
             </div>
         </div>
 
@@ -34,18 +34,7 @@
             </div>
             <div>
                 <h3 class="text-gray-500 text-sm">Total Earnings</h3>
-                <p class="text-2xl font-bold">$3,426</p>
-            </div>
-        </div>
-
-        <!-- Course Rating -->
-        <div class="bg-white rounded-lg shadow-sm p-6 flex items-center">
-            <div class="rounded-full bg-purple-100 p-3 mr-4">
-                <i class="fas fa-star text-purple-600 text-xl"></i>
-            </div>
-            <div>
-                <h3 class="text-gray-500 text-sm">Average Rating</h3>
-                <p class="text-2xl font-bold">4.8</p>
+                <p class="text-2xl font-bold">${{ $stats['cash'] }}</p>
             </div>
         </div>
     </div>

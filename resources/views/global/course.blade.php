@@ -52,7 +52,7 @@
                                 Unsubscribe
                             </button>
                         @endif
-                            <a href="/quiz/{{$course->quizzes[0]->id}}" id="quiz" class="w-full bg-white text-center text-indigo-600 border border-indigo-600 py-3 px-4 rounded-md hover:bg-indigo-50  font-medium">
+                            <a href="/course/{{$course->id}}/quiz/{{$course->quizzes[0]->id}}" id="quiz" class="w-full bg-white text-center text-indigo-600 border border-indigo-600 py-3 px-4 rounded-md hover:bg-indigo-50  font-medium">
                                 Take Quiz
                             </a>
                     </div>
@@ -131,11 +131,10 @@
                     <!-- Instructor -->
                     <div class="bg-white rounded-lg shadow-sm p-6">
                         <h3 class="text-lg font-bold text-gray-900 mb-4">Your Instructor</h3>
-                        <div class="flex items-start">
+                        <div class="flex items-center justify-content-center">
                             <img class="h-16 w-16 rounded-full mr-4" src={{ url("/storage/".$course->teacher->photo) }} alt="ThomasDubois">
                             <div>
                                 <h4 class="text-lg font-medium text-gray-900">{{ $course->teacher->full_name }}</h4>
-                                <button class="text-indigo-600 font-medium hover:text-indigo-500">View full profile</button>
                             </div>
                         </div>
                     </div>
@@ -147,8 +146,6 @@
     <script>
         function animate(button) {
             const currentText = button.textContent.trim();
-
-            // Disable the button to prevent multiple clicks
             button.disabled = true;
 
             if (currentText === "Unsubscribe") {
@@ -162,7 +159,6 @@
                     button.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
                     showNotification("Successfully Unsubscribed from the Course");
 
-                    // Re-enable the button after the process is complete
                     button.disabled = false;
                 }, 1500);
             } else {
@@ -176,20 +172,17 @@
                     button.classList.add('bg-red-600', 'hover:bg-red-700');
                     showNotification("Successfully Subscribed to the Course");
 
-                    // Re-enable the button after the process is complete
                     button.disabled = false;
                 }, 1500);
             }
         }
 
 
-        // Notification system
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.textContent = message;
 
-            // Add notification styles dynamically
             const style = document.createElement('style');
             style.textContent = `
             .notification {
@@ -220,7 +213,6 @@
 
             document.body.appendChild(notification);
 
-            // Remove notification after 3 seconds
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease-in forwards';
                 setTimeout(() => notification.remove(), 300);

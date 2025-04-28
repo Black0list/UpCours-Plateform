@@ -75,7 +75,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
                             </svg>
-                            <span>Badge earned: JavaScript Expert</span>
+                            <span id="badge">Badge earned: JavaScript Expert</span>
                         </div>
                     </div>
                 </div>
@@ -83,31 +83,10 @@
                 <div class="mb-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Badge Earned</h3>
                     <div class="flex items-center justify-center">
-                        <div class="text-center">
-                            <div
-                                class="inline-flex items-center justify-center h-32 w-32 rounded-full bg-yellow-100 mb-3">
-                                <svg class="h-16 w-16 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
-                                </svg>
-                            </div>
-                            <h4 class="text-lg font-bold text-gray-900">JavaScript Expert</h4>
-                            <p class="text-sm text-gray-600">Earned on March 15, 2023</p>
+                        <div class="text-center" id="badge_section">
+
                         </div>
                     </div>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button type="button"
-                            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none ">
-                        <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                             viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                        </svg>
-                        Download Certificate
-                    </button>
                 </div>
             </div>
         </div>
@@ -140,7 +119,7 @@
                 }
             }
             console.log(questionsArray)
-            console.log(remainingQuestions)
+            console.log(remainingQuestions.length)
 
             let currentQuestionIndex = 0;
 
@@ -189,6 +168,7 @@
 
             function renderQuiz() {
                 if (remainingQuestions.length === 0) {
+                    console.log("no remaining questions");
                     submitQuiz();
                     return;
                 }
@@ -311,7 +291,9 @@
                 const correctAnswers = document.querySelector('#CorrectAnswers');
                 const wrongAnswers = document.querySelector('#WrongAnswers');
                 const score = document.querySelector('#Score');
+                const badge = document.querySelector('#badge');
                 const scoreBar = document.querySelector('#ScoreBar');
+                const badgeSection = document.querySelector('#badge_section');
 
                 if (timeDisplay) {
                     timeDisplay.textContent = `Total time: ${formattedTime}`;
@@ -337,7 +319,33 @@
                         correctAnswers.textContent = `Correct answers: ${data.data[0]}`;
                         wrongAnswers.textContent = `Incorrect answers: ${data.data[1]}`;
                         score.textContent = `Correct answers: ${data.data[0]}/${questionsArray.length}`;
+                        badge.textContent = `Badge earned ${data.badge[0]['badge_name']}`
                         scoreBar.style.width = `${(data.data[0] / questionsArray.length) * 100}%`;
+
+                        const baseUrl = "{{ url('/storage') }}";
+
+                        const date = new Date(data.badge[0]['created_at']);
+                        const formattedDate = date.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            hour12: true
+                        });
+
+                        if(data.badge[0])
+                        {
+                            badgeSection.innerHTML = `
+                            <div
+                                class="inline-flex items-center justify-center h-32 w-32 rounded-full bg-yellow-100 mb-3">
+                                <img src="${baseUrl}/${data.badge[0]['icon']}" alt="">
+                            </div>
+                            <h4 class="text-lg font-bold text-gray-900">${data.badge[0]['badge_name']}</h4>
+                            <p class="text-sm text-gray-600">Earned on ${formattedDate}</p>`
+                        } else {
+                            badgeSection.innerHTML = `You are failed in The Quiz Test Oops!`
+                        }
                     } else {
                         console.log("An error occurred while enrolling course.");
                     }

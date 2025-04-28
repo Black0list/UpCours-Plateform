@@ -25,7 +25,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Total Courses</p>
-                            <p class="text-2xl font-bold">{{ $user->courses()->count() }}</p>
+                            <p class="text-2xl font-bold">{{ $stats['courses'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500">Total Students</p>
-                            <p class="text-2xl font-bold">{{ $totalStudents ?? 248 }}</p>
+                            <p class="text-2xl font-bold">{{ $stats['students'] }}</p>
                         </div>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                             <i class="fas fa-star text-yellow-600 text-xl"></i>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-500">Average Rating</p>
-                            <p class="text-2xl font-bold">{{ $averageRating ?? '4.8' }}</p>
+                            <p class="text-sm text-gray-500">Total Earnings</p>
+                            <p class="text-2xl font-bold">${{ $stats['cash'] }}</p>
                         </div>
                     </div>
                 </div>

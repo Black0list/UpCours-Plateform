@@ -34,6 +34,31 @@
                         </div>
                     </div>
 
+                    <div class="sm:col-span-2">
+                        <label for="badge_id" class="block text-sm font-medium text-gray-700">Badge</label>
+                        <div class="mt-1">
+                            <select id="badge_id" name="badge_id" required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
+                                @foreach($badges as $badge)
+                                    <option value="{{ $badge->id }}">
+                                        <img src={{ url('/storage/'.$badge->icon) }} alt="icon" class="w-8 h-8">
+                                        {{ $badge->badge_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                        <div class="mt-1">
+                            <select id="tags" name="tags[]" multiple required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="sm:col-span-6">
                         <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
                         <div class="mt-1">
@@ -157,46 +182,40 @@
         const addQuestionBtn = document.getElementById('addQuestionBtn');
         const questionsList = document.getElementById('questionsList');
 
-        let questionCount = 1;
+        let questionCount = {{ $course->quizzes[0]->questions->count() }};
 
-        // Add a new question
         addQuestionBtn.addEventListener('click', function() {
             const questionDiv = document.createElement('div');
             questionDiv.className = 'p-3 border border-gray-200 rounded-md bg-gray-50 mt-4';
             questionDiv.innerHTML = `
-            <div class="flex justify-between items-start">
-                <div class="flex-grow">
-                    <input type="text" name="questions[${questionCount}][text]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
+    <div class="flex justify-between items-start">
+        <div class="flex-grow">
+            <input type="text" name="questions[${questionCount}][title]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
 
-                    <div class="mt-2 space-y-2">
-                        <div class="flex items-center">
-                            <input type="radio" name="questions[${questionCount}][correct]" value="0" required class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
-                            <input type="text" name="questions[${questionCount}][options][0]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 1">
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" name="questions[${questionCount}][correct]" value="1" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
-                            <input type="text" name="questions[${questionCount}][options][1]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 2">
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" name="questions[${questionCount}][correct]" value="2" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
-                            <input type="text" name="questions[${questionCount}][options][2]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 3">
-                        </div>
-                        <div class="flex items-center">
-                            <input type="radio" name="questions[${questionCount}][correct]" value="3" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
-                            <input type="text" name="questions[${questionCount}][options][3]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 4">
-                        </div>
-                    </div>
+            <div class="mt-2 space-y-2">
+                <div class="flex items-center">
+                    <input type="radio" name="questions[${questionCount}][correct]" value="0" required class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                    <input type="text" name="questions[${questionCount}][options][0]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 1">
                 </div>
-                <button type="button" class="ml-2 text-gray-400 hover:text-red-500 remove-question">
-                    <i class="fas fa-trash"></i>
-                </button>
+                <div class="flex items-center">
+                    <input type="radio" name="questions[${questionCount}][correct]" value="1" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                    <input type="text" name="questions[${questionCount}][options][1]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 2">
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" name="questions[${questionCount}][correct]" value="2" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                    <input type="text" name="questions[${questionCount}][options][2]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 3">
+                </div>
+                <div class="flex items-center">
+                    <input type="radio" name="questions[${questionCount}][correct]" value="3" class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300">
+                    <input type="text" name="questions[${questionCount}][options][3]" required class="ml-2 block w-full px-4 py-2 text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Option 4">
+                </div>
             </div>
-        `;
-
+        </div>
+    </div>
+    `;
             questionsList.appendChild(questionDiv);
             questionCount++;
 
-            // Add event listener to remove question button
             const removeButtons = document.querySelectorAll('.remove-question');
             removeButtons.forEach(button => {
                 button.addEventListener('click', function() {

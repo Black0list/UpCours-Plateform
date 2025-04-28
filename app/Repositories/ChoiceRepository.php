@@ -33,4 +33,9 @@ class ChoiceRepository implements ChoiceRepositoryInterface
     {
         return Choice::destroy($id);
     }
+
+    public function find(int $id)
+    {
+        return  Choice::findOrFail($id);
+    }
 }

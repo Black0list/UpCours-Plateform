@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Course;
 use App\Models\Quiz;
 use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -16,6 +17,26 @@ class CourseRepository implements CourseRepositoryInterface
     public function index()
     {
         return Course::all();
+    }
+
+    public function stats() : array
+    {
+
+        $teacher = Teacher::find(Auth::id());
+
+        $data['students'] = $teacher->courses->sum(function($course) {
+            return $course->subscribers->count();
+        });
+
+        $data['courses'] = $teacher->courses()->count();
+
+        $data['cash'] = $teacher->courses->sum(function ($course) {
+            return $course->price * $course->subscribers->count();
+        });
+
+
+        return $data;
+
     }
 
     public function getById($id)
@@ -42,9 +63,14 @@ class CourseRepository implements CourseRepositoryInterface
             $course->content = $data['content'];
 
             $course->teacher()->associate(Auth::user());
-            $course->category()->associate(Category::find($data['category_id']));
+
+            $course->category()->associate($data['category_id']);
 
             $course->save();
+
+            foreach ($data['tags'] as $tag) {
+                $course->tags()->attach($tag);
+            }
 
             DB::commit();
 
@@ -88,7 +114,16 @@ class CourseRepository implements CourseRepositoryInterface
             $data['image'] = $imagePath;
             $data['content'] = $contentPath;
 
-            $course->update($data);
+            $course = Course::find($id);
+            $course->title = $data['title'];
+            $course->description = $data['description'];
+            $course->price = $data['price'];
+            $course->image = $data['image'];
+            $course->content = $data['content'];
+            $course->category()->associate($data['category_id']);
+            $course->tags()->sync($data['tags']);
+            $course->save();
+
             DB::commit();
 
             return $course;

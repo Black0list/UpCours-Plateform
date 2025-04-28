@@ -43,6 +43,7 @@ class AuthController extends Controller
             'password.min' => 'Password must be at least 6 characters',
             'password.confirmed' => 'Password does not match',
             'role.required' => 'Role is required',
+            'email.unique' => 'Email is already taken'
         ]);
 
         $this->auth->register($validated);
@@ -59,7 +60,7 @@ class AuthController extends Controller
         $user = $this->auth->login($data);
 
         if (!$user) {
-            return redirect()->back()->with('failed', 'The Email or the password is incorrect');
+            return redirect()->back()->with('error', 'The Email or the password is incorrect');
         }
 
         return redirect('/profile');

@@ -21,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [CourseController::class, 'index'])->name('home');
 
 
 Route::get('/courses', [CourseController::class, 'home'])->name('courses');
@@ -41,14 +39,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/enroll', [UserController::class, 'enroll'])->name('enroll');
-    Route::get('/quiz/{id}', [QuizController::class, 'findQuizById'])->name('quiz');
+    Route::get('/course/{courseId}/quiz/{quizId}', [QuizController::class, 'findQuizById'])->name('quiz');
     Route::post('/quizSubmit/{id}', [QuizController::class, 'quizSubmit'])->name('quizSubmit');
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
-        Route::get('/validation', function () { return view('admin.validation'); })->name('admin.validation');
-        Route::post('/validation', [UserController::class, 'validation'])->name('admin.pendingTeachers');
-        Route::post('/validate', [UserController::class, 'validateTeacher'])->name('admin.teacher.validate');
-        Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
+        Route::get('/validation', [UserController::class, 'validation'])->name('admin.validation');
+        Route::put('/validate', [UserController::class, 'validateTeacher'])->name('admin.teacher.validate');
+        Route::delete('/reject', [UserController::class, 'rejectTeacher'])->name('admin.teacher.reject');
+        Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 //    ============ Category ============
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::post('/category', [CategoryController::class, 'create'])->name('admin.categories.create');
@@ -74,11 +72,13 @@ Route::middleware('auth')->group(function () {
 
 //    ============ User ============
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::put('/users/{id}', [UserController::class, 'roleChange'])->name('admin.users.roleChange');
+        Route::delete('/users/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
     });
 
 
     Route::prefix('teacher')->group(function () {
-        Route::get('/dashboard', function () { return view('teacher.dashboard'); })->name('teacher.dashboard');
+        Route::get('/dashboard', [CourseController::class, 'Teacherdashboard'])->name('teacher.dashboard');
         Route::get('/courses',[CourseController::class, 'main'])->name('teacher.courses.main');
 
         Route::get('/course',[CourseController::class, 'createForm'])->name('teacher.courses.createForm');

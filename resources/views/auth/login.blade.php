@@ -20,10 +20,10 @@
 
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
             <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-                @if(session('failed'))
+                @if(session('error'))
                     <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded relative mb-4" role="alert">
                         <strong class="font-bold">Oops! </strong>
-                        <span class="block sm:inline">{{ session('failed') }}</span>
+                        <span class="block sm:inline">{{ session('error') }}</span>
                         <span class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer" onclick="this.parentElement.remove();">
                         &times;
                     </span>

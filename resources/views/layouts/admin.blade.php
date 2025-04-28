@@ -81,6 +81,11 @@
                         <i class="fas fa-user-check w-5 h-5 mr-3 {{ request()->is('admin/validation*') ? 'text-white' : 'text-primary-500' }}"></i>
                         Teacher Validation
                     </a>
+                    {{--Users--}}
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/users*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
+                        <i class="fas fa-users w-5 h-5 mr-3 {{ request()->is('admin/users*') ? 'text-white' : 'text-primary-500' }}"></i>
+                        Users
+                    </a>
 
                     <!-- Categories Link -->
                     <a href="/admin/categories" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/categories*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">

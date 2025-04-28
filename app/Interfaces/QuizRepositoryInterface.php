@@ -8,5 +8,5 @@ interface QuizRepositoryInterface
     public function update(int $id, array $data);
     public function delete(int $id);
     public function find(int $id);
-    public function findAndSubmit(int $id, array $data);
+    public function findAndSubmit(int $id, int $data, bool $isBadge);
 }

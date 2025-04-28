@@ -32,6 +32,9 @@
                         <div class="mt-1">
                             <input id="firstname" name="firstname" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
+                        @error('firstname')
+                        <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+                        @enderror
                         <div id="firstname-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 
@@ -40,6 +43,9 @@
                         <div class="mt-1">
                             <input id="lastname" name="lastname" type="text" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
+                        @error('lastname')
+                        <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+                        @enderror
                         <div id="lastname-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 
@@ -48,6 +54,9 @@
                         <div class="mt-1">
                             <input id="phone" name="phone" type="tel" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
+                        @error('phone')
+                        <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+                        @enderror
                         <div id="phone-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 
@@ -56,6 +65,9 @@
                         <div class="mt-1">
                             <input id="email" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
+                        @error('email')
+                        <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+                        @enderror
                         <div id="email-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 
@@ -64,6 +76,9 @@
                         <div class="mt-1">
                             <input id="password" name="password" type="password" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm sm:text-sm">
                         </div>
+                        @error('password')
+                        <div class="text-sm text-red-600 mt-1">{{ $message }}</div>
+                        @enderror
                         <div id="password-error" class="text-sm text-red-600 mt-1"></div>
                     </div>
 

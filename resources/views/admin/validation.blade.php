@@ -24,7 +24,7 @@
                                     <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-12 w-12">
-                                                <img class="h-12 w-12 rounded-full" src="{{ $teacher->photo ?? '/placeholder.svg?height=48&width=48' }}" alt="Teacher photo">
+                                                <img class="h-12 w-12 rounded-full" src="{{ url('/storage/'.$teacher->photo) }}" alt="Teacher photo">
                                             </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-primary-600">
@@ -36,28 +36,25 @@
                                             </div>
                                         </div>
                                         <div class="flex space-x-2">
-                                            <a href="{{ route('admin.teachers.show', $teacher->id ?? 1) }}" class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                                                <i class="fas fa-eye mr-1.5"></i> View
-                                            </a>
-                                            <button type="button"  class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-                                                <i class="fas fa-check mr-1.5"></i> Approve
-                                            </button>
-                                            <button type="button" class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                                <i class="fas fa-times mr-1.5"></i> Reject
-                                            </button>
+                                            <form action="{{ route('admin.teacher.validate') }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
+                                                <button type="submit"  class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                                    <i class="fas fa-check mr-1.5"></i> Approve
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.teacher.reject') }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
+                                                <button type="submit" class="inline-flex items-center px-3 py-1.5 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                    <i class="fas fa-times mr-1.5"></i> Reject
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
-                                    <div class="mt-2 sm:flex sm:justify-between">
-                                        <div class="sm:flex">
-                                            <div class="flex items-center text-sm text-gray-500">
-                                                <i class="fas fa-graduation-cap flex-shrink-0 mr-1.5 text-gray-400"></i>
-                                                <p>{{ $teacher->specialization ?? 'Web Development' }}</p>
-                                            </div>
-                                            <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
-                                                <i class="fas fa-briefcase flex-shrink-0 mr-1.5 text-gray-400"></i>
-                                                <p>{{ $teacher->experience ?? '5 years experience' }}</p>
-                                            </div>
-                                        </div>
+                                    <div class="mt-2 sm:flex sm:justify-end">
                                         <div class="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
                                             <i class="fas fa-calendar flex-shrink-0 mr-1.5 text-gray-400"></i>
                                             <p>Applied on <time datetime="{{ $teacher->created_at ?? now() }}">{{ $teacher->created_at ? $teacher->created_at->format('M d, Y') : now()->format('M d, Y') }}</time></p>

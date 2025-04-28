@@ -36,6 +36,6 @@ class QuestionRepository implements QuestionRepositoryInterface
 
     public function find(int $id)
     {
-        return Question::find($id);
+        return Question::findOrFail($id);
     }
 }
