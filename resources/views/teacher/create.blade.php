@@ -6,10 +6,8 @@
 @section('content')
     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
         <div class="p-6">
-            <form id="courseForm" method="POST" action="/courses/create" enctype="multipart/form-data" class="space-y-6">
+            <form id="courseForm" method="POST" action={{ route("teacher.courses.create") }} enctype="multipart/form-data" class="space-y-6">
                 @csrf
-                <input type="hidden" name="teacher_id" value="{{ Auth::user()->id }}">
-
                 <div class="border-b border-gray-200 pb-6">
                     <h3 class="text-lg font-medium text-gray-900">Course Information</h3>
                     <p class="mt-1 text-sm text-gray-500">Fill in the details about your new course.</p>
@@ -29,6 +27,31 @@
                             <select id="category_id" name="category_id" required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="badge_id" class="block text-sm font-medium text-gray-700">Badge</label>
+                        <div class="mt-1">
+                            <select id="badge_id" name="badge_id" required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
+                                @foreach($badges as $badge)
+                                    <option value="{{ $badge->id }}">
+                                        <img src={{ url('/storage/'.$badge->icon) }} alt="icon" class="w-8 h-8">
+                                        {{ $badge->badge_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="tags" class="block text-sm font-medium text-gray-700">Tags</label>
+                        <div class="mt-1">
+                            <select id="tags" name="tags[]" multiple required class="px-4 py-2.5 shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full text-sm border border-gray-300 rounded-md">
+                                @foreach($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -97,7 +120,7 @@
                             <div class="p-3 border border-gray-200 rounded-md bg-gray-50">
                                 <div class="flex justify-between items-start">
                                     <div class="flex-grow">
-                                        <input type="text" name="questions[0][text]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
+                                        <input type="text" name="questions[0][title]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
 
                                         <div class="mt-2 space-y-2">
                                             <div class="flex items-center">
@@ -129,9 +152,6 @@
                 </div>
 
                 <div class="flex justify-end space-x-3">
-{{--                    <button type="button" id="saveDraftBtn" class="btn inline-flex items-center px-4 py-2.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">--}}
-{{--                        Save as Draft--}}
-{{--                    </button>--}}
                     <button type="submit" class="btn btn-primary inline-flex items-center px-4 py-2.5 border border-primary-700 shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
                         Publish Course
                     </button>
@@ -139,23 +159,21 @@
             </form>
         </div>
     </div>
-
+@endsection
     @section('scripts')
         <script>
-            // Add question functionality
             const addQuestionBtn = document.getElementById('addQuestionBtn');
             const questionsList = document.getElementById('questionsList');
 
             let questionCount = 1;
 
-            // Add a new question
             addQuestionBtn.addEventListener('click', function() {
                 const questionDiv = document.createElement('div');
                 questionDiv.className = 'p-3 border border-gray-200 rounded-md bg-gray-50 mt-4';
                 questionDiv.innerHTML = `
             <div class="flex justify-between items-start">
                 <div class="flex-grow">
-                    <input type="text" name="questions[${questionCount}][text]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
+                    <input type="text" name="questions[${questionCount}][title]" required class="px-4 py-2.5 block w-full text-sm border border-gray-300 rounded-md focus:ring-primary-500 focus:border-primary-500" placeholder="Question text">
 
                     <div class="mt-2 space-y-2">
                         <div class="flex items-center">
@@ -185,7 +203,6 @@
                 questionsList.appendChild(questionDiv);
                 questionCount++;
 
-                // Add event listener to remove question button
                 const removeButtons = document.querySelectorAll('.remove-question');
                 removeButtons.forEach(button => {
                     button.addEventListener('click', function() {
@@ -195,7 +212,6 @@
             });
 
 
-            // Validate content file when selected
             document.getElementById('content').addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
@@ -206,7 +222,6 @@
                         return;
                     }
 
-                    // Validate file type
                     const fileExt = file.name.split('.').pop().toLowerCase();
                     if (!['pdf', 'mp4', 'mov', 'avi', 'mkv'].includes(fileExt)) {
                         alert('Please select a valid content file (PDF, MP4, MOV, AVI, MKV)');
@@ -216,5 +231,4 @@
                 }
             });
         </script>
-    @endsection
 @endsection

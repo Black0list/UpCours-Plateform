@@ -27,11 +27,23 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
             'phone' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'role' => 'required|string'
+        ],
+        [
+            'firstname.required' => 'Firstname is required',
+            'lastname.required' => 'Lastname is required',
+            'phone.required' => 'Phone is required',
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 6 characters',
+            'password.confirmed' => 'Password does not match',
+            'role.required' => 'Role is required',
+            'email.unique' => 'Email is already taken'
         ]);
 
         $this->auth->register($validated);
@@ -48,7 +60,7 @@ class AuthController extends Controller
         $user = $this->auth->login($data);
 
         if (!$user) {
-            return redirect()->back()->with('failed', 'The Email or the password is incorrect');
+            return redirect()->back()->with('error', 'The Email or the password is incorrect');
         }
 
         return redirect('/profile');

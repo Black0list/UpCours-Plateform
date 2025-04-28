@@ -74,74 +74,30 @@
                 <p class="mt-4 text-lg text-gray-600">Discover our most popular courses loved by our students.</p>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Course Card 1 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full transition-transform duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1472&q=80" alt="Web Development" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 left-4">
-                            <span class="text-xs font-semibold px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full shadow-sm">Development</span>
+                <!-- Course Card -->
+                @foreach($courses as $course)
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full transition-transform duration-300 hover:shadow-xl hover:-translate-y-1">
+                        <div class="relative">
+                            <img src="{{ url('/storage/'.$course->image) }}" alt="CourseImage" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 left-4">
+                                <span class="text-xs font-semibold px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full shadow-sm">Marketing</span>
+                            </div>
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col">
+                            <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 h-14">{{ $course->title }}</h3>
+                            <p class="text-gray-600 mb-4 flex-grow line-clamp-3">{{ Str::limit($course->description, 120) }}</p>
+                            <div class="flex justify-between items-center pt-4 mt-auto border-t border-gray-100">
+                                <span class="text-gray-900 font-bold text-lg">${{ $course->price }}</span>
+                                <a href="/course/{{$course->id}}" class="inline-flex items-center px-4 py-2 bg-indigo-50 border border-transparent rounded-md text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-300">
+                                    View Course
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 h-14">Full-Stack Web Development</h3>
-                        <p class="text-gray-600 mb-4 flex-grow line-clamp-3">Learn to create complete web applications with modern technologies.</p>
-                        <div class="flex justify-between items-center pt-4 mt-auto border-t border-gray-100">
-                            <span class="text-gray-900 font-bold text-lg">$49.99</span>
-                            <a href="/courses/1" class="inline-flex items-center px-4 py-2 bg-indigo-50 border border-transparent rounded-md text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-300">
-                                View Course
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course Card 2 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full transition-transform duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Artificial Intelligence" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 left-4">
-                            <span class="text-xs font-semibold px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full shadow-sm">Data Science</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 h-14">Artificial Intelligence and Machine Learning</h3>
-                        <p class="text-gray-600 mb-4 flex-grow line-clamp-3">Master the fundamental concepts of AI and machine learning.</p>
-                        <div class="flex justify-between items-center pt-4 mt-auto border-t border-gray-100">
-                            <span class="text-gray-900 font-bold text-lg">$59.99</span>
-                            <a href="/courses/2" class="inline-flex items-center px-4 py-2 bg-indigo-50 border border-transparent rounded-md text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-300">
-                                View Course
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course Card 3 -->
-                <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full transition-transform duration-300 hover:shadow-xl hover:-translate-y-1">
-                    <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1415&q=80" alt="Digital Marketing" class="w-full h-48 object-cover">
-                        <div class="absolute top-4 left-4">
-                            <span class="text-xs font-semibold px-3 py-1.5 bg-indigo-100 text-indigo-800 rounded-full shadow-sm">Marketing</span>
-                        </div>
-                    </div>
-                    <div class="p-6 flex-1 flex flex-col">
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 h-14">Complete Digital Marketing</h3>
-                        <p class="text-gray-600 mb-4 flex-grow line-clamp-3">Develop an effective digital marketing strategy for your business.</p>
-                        <div class="flex justify-between items-center pt-4 mt-auto border-t border-gray-100">
-                            <span class="text-gray-900 font-bold text-lg">$39.99</span>
-                            <a href="/courses/3" class="inline-flex items-center px-4 py-2 bg-indigo-50 border border-transparent rounded-md text-sm font-medium text-indigo-700 hover:bg-indigo-100 transition-colors duration-300">
-                                View Course
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="text-center mt-12">
                 <a href="/courses" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-300 shadow-md">

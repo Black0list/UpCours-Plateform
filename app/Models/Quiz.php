@@ -22,8 +22,13 @@ class Quiz extends Model
         return $this->hasMany(Question::class);
     }
 
+    public function badge()
+    {
+       return $this->belongsTo(Badge::class);
+    }
+
     public function students()
     {
-        return $this->belongsToMany(Student::class);
+        return $this->belongsToMany(Student::class, 'student_quizzes', 'quiz_id', 'student_id')->withTimestamps();
     }
 }

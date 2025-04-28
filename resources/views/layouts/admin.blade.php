@@ -70,6 +70,22 @@
             </div>
             <div class="flex flex-col flex-grow px-4 py-4 overflow-y-auto">
                 <div class="flex flex-col flex-grow space-y-1">
+                    <!-- Dashboard Link -->
+                    <a href="/admin/dashboard" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/dashboard*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
+                        <i class="fas fa-tachometer-alt w-5 h-5 mr-3 {{ request()->is('admin/dashboard*') ? 'text-white' : 'text-primary-500' }}"></i>
+                        Dashboard
+                    </a>
+
+                    <!-- Teacher Validation Link -->
+                    <a href="{{ route('admin.validation') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/validation*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
+                        <i class="fas fa-user-check w-5 h-5 mr-3 {{ request()->is('admin/validation*') ? 'text-white' : 'text-primary-500' }}"></i>
+                        Teacher Validation
+                    </a>
+                    {{--Users--}}
+                    <a href="{{ route('admin.users.index') }}" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/users*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
+                        <i class="fas fa-users w-5 h-5 mr-3 {{ request()->is('admin/users*') ? 'text-white' : 'text-primary-500' }}"></i>
+                        Users
+                    </a>
 
                     <!-- Categories Link -->
                     <a href="/admin/categories" class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-all sidebar-item {{ request()->is('admin/categories*') ? 'sidebar-active' : 'text-gray-700 hover:text-primary-600' }}">
@@ -128,8 +144,8 @@
                             <div>
                                 <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="userPhoto" />
-                                    <span class="hidden md:block text-gray-700">{{ Auth::user()->name }}</span>
+                                    <img class="h-8 w-8 rounded-full" src={{ url('/storage/'.Auth::user()->photo)}} alt="userPhoto" />
+                                    <span class="hidden md:block text-gray-700">{{ Auth::user()->full_name }}</span>
                                     <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
                                 </button>
                             </div>
@@ -150,6 +166,18 @@
         <!-- Mobile Navigation (Hidden by default) -->
         <div class="md:hidden hidden" id="mobile-menu">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-b border-gray-200">
+                <!-- Dashboard Link (Mobile) -->
+                <a href="/admin/dashboard" class="block px-3 py-2 text-base font-medium rounded-md {{ request()->is('admin/dashboard*') ? 'bg-primary-500 text-white' : 'text-gray-700 hover:bg-primary-50 hover:text-primary-600' }}">
+                    <i class="fas fa-tachometer-alt mr-3 {{ request()->is('admin/dashboard*') ? 'text-white' : 'text-primary-500' }}"></i>
+                    Dashboard
+                </a>
+
+                <!-- Teacher Validation Link (Mobile) -->
+                <a href="{{ route('admin.validation') }}" class="block px-3 py-2 text-base font-medium rounded-md {{ request()->is('admin/validation*') ? 'bg-primary-500 text-white' : 'text-gray-700 hover:bg-primary-50 hover:text-primary-600' }}">
+                    <i class="fas fa-user-check mr-3 {{ request()->is('admin/validation*') ? 'text-white' : 'text-primary-500' }}"></i>
+                    Teacher Validation
+                </a>
+
                 <a href="/admin/categories" class="block px-3 py-2 text-base font-medium rounded-md {{ request()->is('admin/categories*') ? 'bg-primary-500 text-white' : 'text-gray-700 hover:bg-primary-50 hover:text-primary-600' }}">
                     <i class="fas fa-folder-open mr-3 {{ request()->is('admin/categories*') ? 'text-white' : 'text-primary-500' }}"></i>
                     Categories
@@ -170,10 +198,10 @@
             <div class="pt-4 pb-3 border-t border-gray-200">
                 <div class="flex items-center px-5">
                     <div class="flex-shrink-0">
-                        <img class="w-10 h-10 rounded-full" src={{ url('/storage/'.Auth::user()->photo) }} alt="">
+                        <img class="w-10 h-10 rounded-full" src={{ url('/storage/'.Auth::user()->photo)  || "/placeholder.svg"}} alt="">
                     </div>
                     <div class="ml-3">
-                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->full_name }}</div>
                     </div>
                 </div>
                 <div class="px-2 mt-3 space-y-1">

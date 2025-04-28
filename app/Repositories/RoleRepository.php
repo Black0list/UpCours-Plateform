@@ -10,8 +10,7 @@ class RoleRepository implements RoleRepositoryInterface
 {
     public function index()
     {
-        $roles = Role::all();
-        return $roles;
+        return Role::all();
     }
 
     public function create(string $name)

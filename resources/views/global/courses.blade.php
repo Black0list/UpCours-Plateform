@@ -51,37 +51,12 @@
                                 @endif
                             </div>
 
-                            <!-- Price Range -->
-                            <div class="mb-6">
-                                <h3 class="text-sm font-medium text-gray-900 mb-3">Price Range</h3>
-                                <div class="grid grid-cols-2 gap-3">
-                                    <div>
-                                        <label for="min_price" class="block text-xs text-gray-500 mb-1">Min</label>
-                                        <div class="relative rounded-md shadow-sm">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">€</span>
-                                            </div>
-                                            <input type="number" id="min_price" name="min_price" value="{{ request('min_price') }}" min="0" step="0.01" class="pl-7 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label for="max_price" class="block text-xs text-gray-500 mb-1">Max</label>
-                                        <div class="relative rounded-md shadow-sm">
-                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                <span class="text-gray-500 sm:text-sm">€</span>
-                                            </div>
-                                            <input type="number" id="max_price" name="max_price" value="{{ request('max_price') }}" min="0" step="0.01" class="pl-7 w-full px-3 py-2 rounded-md border border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Apply Filters Button -->
                             <button type="submit" class="w-full bg-primary text-white py-2.5 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200">
                                 Apply Filters
                             </button>
 
-                            @if(request()->has('search') || request()->has('categories') || request()->has('min_price') || request()->has('max_price'))
+                            @if(request()->has('search') || request()->has('categories'))
                                 <a href="/courses" class="mt-3 text-sm text-center block text-primary hover:text-primary/80">
                                     Clear all filters
                                 </a>
@@ -96,22 +71,9 @@
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 bg-white p-4 rounded-lg shadow-sm">
                         @if(isset($courses))
                             <p class="text-sm text-gray-500 mb-2 sm:mb-0">
-                                Showing <span class="font-medium">{{ $courses->count() }}</span>
-                                @if(method_exists($courses, 'total'))
-                                    of <span class="font-medium">{{ $courses->total() }}</span>
-                                @endif
-                                courses
+                                Showing <span class="font-medium">{{ $courses->count() }}</span> courses
                             </p>
                         @endif
-                        <div class="flex items-center">
-                            <label for="sort" class="text-sm font-medium text-gray-700 mr-2">Sort by:</label>
-                            <select id="sort" name="sort" onchange="window.location.href = '/courses?sort=' + this.value + '{{ request()->has('search') ? '&search=' . request('search') : '' }}{{ request()->has('categories') ? '&categories[]=' . implode('&categories[]=', request('categories')) : '' }}'" class="rounded-md border border-gray-300 py-1.5 pl-3 pr-10 text-base focus:border-primary focus:outline-none focus:ring-primary sm:text-sm">
-                                <option value="popular" {{ request('sort') == 'popular' ? 'selected' : '' }}>Most Popular</option>
-                                <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Newest</option>
-                                <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
-                                <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
-                            </select>
-                        </div>
                     </div>
 
                     <!-- Courses List -->
@@ -136,7 +98,7 @@
                                             @if(isset($course->teacher))
                                                 <div class="mb-4 flex items-center text-sm text-gray-500 pt-3 border-t border-gray-100">
                                                     <img src={{ url('/storage/'.$course->teacher->photo)  }} alt="Teacher" class="w-6 h-6 rounded-full mr-2">
-                                                    <span class="text-green-900 font-bold">{{ $course->teacher->name ?? 'Instructor' }}</span>
+                                                    <span class="text-green-900 font-bold">{{ $course->teacher->full_name ?? 'Instructor' }}</span>
                                                 </div>
                                             @endif
                                             <div class="flex justify-between items-center pt-3 border-t border-gray-100">

@@ -4,6 +4,7 @@ use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -20,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['web'])->group(function () {
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [CourseController::class, 'index'])->name('home');
 
 
 Route::get('/courses', [CourseController::class, 'home'])->name('courses');
@@ -39,16 +38,15 @@ Route::middleware('auth')->group(function () {
 //    ======= auth =======
     Route::get('/profile', function () { return view('global.profile'); })->name('profile');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/courses/create', [CourseController::class, 'create']);
-    Route::get('/course/{id}', [CourseController::class, 'show'])->name('admin.courses.show');
+    Route::post('/enroll', [UserController::class, 'enroll'])->name('enroll');
+    Route::get('/course/{courseId}/quiz/{quizId}', [QuizController::class, 'findQuizById'])->name('quiz');
+    Route::post('/quizSubmit/{id}', [QuizController::class, 'quizSubmit'])->name('quizSubmit');
 //    ========== admin ==========
     Route::prefix('/admin')->group(function () {
-
-        Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
-
-        Route::get('/course/{id}/edit', [CourseController::class, 'edit'])->name('admin.courses.edit');
-        Route::post('/courses/{id}/edit', [CourseController::class, 'update']);
-        Route::delete('/courses/{id}', [CourseController::class, 'destroy'])->name('admin.courses.destroy');
+        Route::get('/validation', [UserController::class, 'validation'])->name('admin.validation');
+        Route::put('/validate', [UserController::class, 'validateTeacher'])->name('admin.teacher.validate');
+        Route::delete('/reject', [UserController::class, 'rejectTeacher'])->name('admin.teacher.reject');
+        Route::get('/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 //    ============ Category ============
         Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
         Route::post('/category', [CategoryController::class, 'create'])->name('admin.categories.create');
@@ -74,15 +72,23 @@ Route::middleware('auth')->group(function () {
 
 //    ============ User ============
         Route::get('/users', [UserController::class, 'index'])->name('admin.users.index');
+        Route::put('/users/{id}', [UserController::class, 'roleChange'])->name('admin.users.roleChange');
+        Route::delete('/users/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
     });
 
 
     Route::prefix('teacher')->group(function () {
-        Route::get('/dashboard', function () {
-            return view('teacher.dashboard');
-        })->name('teacher.dashboard');
-        Route::get('/courses/create',[CourseController::class, 'createForm'])->name('teacher.courses.create');
+        Route::get('/dashboard', [CourseController::class, 'Teacherdashboard'])->name('teacher.dashboard');
+        Route::get('/courses',[CourseController::class, 'main'])->name('teacher.courses.main');
+
+        Route::get('/course',[CourseController::class, 'createForm'])->name('teacher.courses.createForm');
+        Route::get('/course/{id}',[CourseController::class, 'updateForm'])->name('teacher.courses.updateForm');
+        Route::post('/course', [CourseController::class, 'create'])->name('teacher.courses.create');
+        Route::put('/course/{id}',[CourseController::class, 'update'])->name('teacher.courses.update');
+        Route::delete('/course/{id}',[CourseController::class, 'delete'])->name('teacher.courses.delete');
     });
+
+    Route::get('/course/{id}', [CourseController::class, 'show'])->name('course.show');
 
 
 

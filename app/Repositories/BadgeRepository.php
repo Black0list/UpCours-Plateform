@@ -13,6 +13,11 @@ class BadgeRepository implements BadgeRepositoryInterface
         return Badge::with('earners')->get();
     }
 
+    public function find($id)
+    {
+        return Badge::with('earners')->find($id);
+    }
+
     public function create(array $data)
     {
         $path = $data['icon']->store('badges', 'public');

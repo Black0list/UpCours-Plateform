@@ -14,7 +14,7 @@ class Badge extends Model
 
     public function earners()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'badge_user', 'badge_id', 'user_id')->withTimestamps();
     }
 
 

@@ -62,7 +62,7 @@
                                  class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-white shadow-lg">
                         @else
                             <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 text-3xl md:text-4xl font-bold border-4 border-white shadow-lg">
-                                {{ substr(Auth::user()->name, 0, 1) }}
+                                {{ substr(Auth::user()->firstname, 0, 1) }}
                             </div>
                         @endif
                         <div class="photo-upload-hover absolute inset-0 rounded-full bg-black bg-opacity-50 flex items-center justify-center">
@@ -96,8 +96,14 @@
 
                                 <div class="space-y-4">
                                     <div>
-                                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                        <input type="text" name="name" id="name" value="{{ Auth::user()->name }}"
+                                        <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                                        <input type="text" name="name" id="name" value="{{ Auth::user()->firstname }}"
+                                               class="block w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-500 input-focus-ring transition">
+                                    </div>
+
+                                    <div>
+                                        <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                                        <input type="text" name="name" id="name" value="{{ Auth::user()->lastname }}"
                                                class="block w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-500 input-focus-ring transition">
                                     </div>
 

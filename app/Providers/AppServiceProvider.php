@@ -11,6 +11,7 @@ use App\Interfaces\QuestionRepositoryInterface;
 use App\Interfaces\QuizRepositoryInterface;
 use App\Interfaces\RoleRepositoryInterface;
 use App\Interfaces\TagRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\BadgeRepository;
 use App\Repositories\CategoryRepository;
@@ -20,6 +21,8 @@ use App\Repositories\QuestionRepository;
 use App\Repositories\QuizRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\TagRepository;
+use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -39,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             RoleRepositoryInterface::class,
             RoleRepository::class
+        );
+
+        $this->app->bind(
+            UserRepositoryInterface::class,
+            UserRepository::class
         );
 
         $this->app->bind(
@@ -84,6 +92,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }

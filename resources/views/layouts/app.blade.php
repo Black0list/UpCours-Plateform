@@ -10,6 +10,11 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Plyr CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+
+    <!-- Plyr JS -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
     <!-- Custom Styles -->
     <style>
         /* Dropdown animation */
@@ -69,12 +74,10 @@
                 @auth
                     <div class="flex items-center space-x-4">
                         {{-- Role-specific links --}}
-                        @if(Auth::user()->role->role_name === 'student')
-                            <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
-                        @elseif(Auth::user()->role->role_name === 'teacher')
+                        @if(strtolower(Auth::user()->role->role_name) === 'teacher')
                             <a href="/teacher/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
                             <a href="/teacher/courses" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">My Courses</a>
-                        @elseif(Auth::user()->role->role_name === 'admin')
+                        @elseif(strtolower(Auth::user()->role->role_name) === 'admin')
                             <a href="/admin/dashboard" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">Administration</a>
                         @endif
 
@@ -83,8 +86,10 @@
                             <div>
                                 <button type="button" class="flex items-center space-x-3 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="h-8 w-8 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="userPhoto" />
-                                    <i class="fas fa-chevron-down text-gray-400 text-xs"></i>
+                                    <div class="">
+                                        <div class="text-base font-medium text-gray-800">{{ Auth::user()->full_name }}</div>
+                                    </div>
+                                    <img class="h-8 w-8 rounded-full" src={{ url('/storage/'.Auth::user()->photo) }} alt="userPhoto" />
                                 </button>
                             </div>
 
@@ -136,14 +141,14 @@
             @auth
                 {{-- Role-specific mobile links --}}
                 <div class="pt-2 pb-3 space-y-1 border-t border-gray-200">
-                    @if(Auth::user()->role->role_name === 'teacher')
+                    @if(strtolower(Auth::user()->role->role_name) === 'teacher')
                         <a href="/teacher/dashboard" class="{{ Request::is('teacher/dashboard*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                             Dashboard
                         </a>
                         <a href="/teacher/courses" class="{{ Request::is('teacher/courses*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                             My Courses
                         </a>
-                    @elseif(Auth::user()->role->role_name === 'admin')
+                    @elseif(strtolower(Auth::user()->role->role_name) === 'admin')
                         <a href="/admin/dashboard" class="{{ Request::is('admin/dashboard*') ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700' }} block pl-3 pr-4 py-2 border-l-4 text-base font-medium">
                             Administration
                         </a>
@@ -157,7 +162,7 @@
                             <img class="h-10 w-10 rounded-full" src={{ url('storage/'.Auth::user()->photo) }} alt="Userprofile">
                         </div>
                         <div class="ml-3">
-                            <div class="text-base font-medium text-gray-800">{{ Auth::user()->name }}</div>
+                            <div class="text-base font-medium text-gray-800">{{ Auth::user()->full_name }}</div>
                         </div>
                     </div>
                     <div class="mt-3 space-y-1">
@@ -180,7 +185,7 @@
         <div id="mobile-profile-dropdown" class="hidden sm:hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
             <div class="px-4 py-2 border-b border-gray-100">
                 @auth
-                    <p class="text-sm font-medium text-gray-900">{{ Auth::user()->name }}</p>
+                    <p class="text-sm font-medium text-gray-900">{{ Auth::user()->full_name }}</p>
                 @endauth
             </div>
             <a href="/profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
@@ -191,6 +196,28 @@
 
 <!-- Main Content -->
 <main class="flex-grow">
+    @if (session('success'))
+        <div id="successAlert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Success! </strong>
+            <span class="block sm:inline">{{ session('success') }}</span>
+            <button onclick="document.getElementById('successAlert').style.display='none'"
+                    class="absolute top-0 right-0 mt-2 mr-2 text-green-700 font-bold text-xl leading-none focus:outline-none">
+                ×
+            </button>
+        </div>
+    @endif
+
+    @if (session('failed'))
+        <div id="failedAlert" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <strong class="font-bold">Error! </strong>
+            <span class="block sm:inline">{{ session('failed') }}</span>
+            <button onclick="document.getElementById('failedAlert').style.display='none'"
+                    class="absolute top-0 right-0 mt-2 mr-2 text-red-700 font-bold text-xl leading-none focus:outline-none">
+                ×
+            </button>
+        </div>
+    @endif
+
     @yield('content')
 </main>
 
