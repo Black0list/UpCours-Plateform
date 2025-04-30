@@ -47,11 +47,12 @@ class CourseController extends Controller
     }
 
     // Show courses to public
-    public function home()
+    public function home(Request $request)
     {
-        $courses = $this->courseRepository->index();
-        $categories = $this->categoryRepository->all();
-        return view('global.courses', compact('courses', 'categories'));
+        $search = $request->input('search');
+        $courses = $this->courseRepository->search($search);
+
+        return view('global.courses', compact('courses'));
     }
 
     public function Teacherdashboard()

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Interfaces\AuthRepositoryInterface;
 use App\Interfaces\BadgeRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Interfaces\CertificateRepositoryInterface;
 use App\Interfaces\ChoiceRepositoryInterface;
 use App\Interfaces\CourseRepositoryInterface;
 use App\Interfaces\QuestionRepositoryInterface;
@@ -15,6 +16,7 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\AuthRepository;
 use App\Repositories\BadgeRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\CertificateRepository;
 use App\Repositories\ChoiceRepository;
 use App\Repositories\CourseRepository;
 use App\Repositories\QuestionRepository;
@@ -37,6 +39,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             AuthRepositoryInterface::class,
             AuthRepository::class
+        );
+
+        $this->app->bind(
+            CertificateRepositoryInterface::class,
+            CertificateRepository::class
         );
 
         $this->app->bind(
