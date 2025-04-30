@@ -11,4 +11,6 @@ interface UserRepositoryInterface
     public function all();
     public function delete(int $id);
     public function changeRole(int $id, int $role);
+    public function update(array $data);
+    public function create(array $data);
 }

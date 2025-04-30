@@ -43,7 +43,7 @@
 
 @section('content')
     <div class="w-full bg-gray-50 min-h-screen pb-12">
-        <form action="/profile/update" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -97,13 +97,13 @@
                                 <div class="space-y-4">
                                     <div>
                                         <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                                        <input type="text" name="name" id="name" value="{{ Auth::user()->firstname }}"
+                                        <input type="text" name="firstname" id="firstname" value="{{ Auth::user()->firstname }}"
                                                class="block w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-500 input-focus-ring transition">
                                     </div>
 
                                     <div>
                                         <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                                        <input type="text" name="name" id="name" value="{{ Auth::user()->lastname }}"
+                                        <input type="text" name="lastname" id="lastname" value="{{ Auth::user()->lastname }}"
                                                class="block w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:border-indigo-500 input-focus-ring transition">
                                     </div>
 

@@ -334,8 +334,7 @@
                             hour12: true
                         });
 
-                        if(data.badge[0])
-                        {
+                        if (data.badge[0]) {
                             badgeSection.innerHTML = `
                             <div
                                 class="inline-flex items-center justify-center h-32 w-32 rounded-full bg-yellow-100 mb-3">
@@ -343,8 +342,17 @@
                             </div>
                             <h4 class="text-lg font-bold text-gray-900">${data.badge[0]['badge_name']}</h4>
                             <p class="text-sm text-gray-600">Earned on ${formattedDate}</p>`
+
+                            resultSection.innerHTML += `                <form action="/generate" method="POST" class="inline-block">
+                    @csrf
+                            <input type="hidden" name="course" value="{{ $quiz->course->id }}">
+                    <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                        Download Certificate
+                    </button>
+                </form>`
                         } else {
                             badgeSection.innerHTML = `You are failed in The Quiz Test Oops!`
+                            badge.textContent = "no Badge Earned"
                         }
                     } else {
                         console.log("An error occurred while enrolling course.");

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\AuthRepositoryInterface;
 use App\Interfaces\RoleRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,10 +14,12 @@ use Illuminate\Support\Facades\Hash;
 class AuthRepository implements AuthRepositoryInterface
 {
     protected $RoleRepository;
+    protected $UserRepository;
 
-    public function __construct(RoleRepositoryInterface $RoleRepository)
+    public function __construct(RoleRepositoryInterface $RoleRepository, UserRepositoryInterface $UserRepository)
     {
         $this->RoleRepository = $RoleRepository;
+        $this->UserRepository = $UserRepository;
     }
     public function register(array $data)
     {
@@ -32,20 +35,13 @@ class AuthRepository implements AuthRepositoryInterface
             $isPending = true;
         }
 
-        $user = new User();
-        $user->firstname = $data['firstname'];
-        $user->lastname = $data['lastname'];
-        $user->phone = $data['phone'];
-        $user->photo = "icons/user.png";
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
-        $user->isPending = $isPending;
-        $user->role()->associate($role);
+        $data['status'] = $isPending;
+        $data['role'] = $role;
 
-        $user->save();
+        $this->UserRepository->create($data);
     }
 
-    public function login(array $data)
+    public function login($data)
     {
         $user = User::where('email', $data['email'])->first();
 
@@ -53,7 +49,6 @@ class AuthRepository implements AuthRepositoryInterface
             return false;
         }
 
-        Auth::login($user);
         return $user;
     }
 

@@ -16,8 +16,17 @@ class CourseRepository implements CourseRepositoryInterface
 {
     public function index()
     {
-        return Course::all();
+        return Course::paginate(6);
     }
+
+    public function search($query = null)
+    {
+        return Course::when($query, function ($q) use ($query) {
+            $q->where('title', 'like', '%' . $query . '%')
+                ->orWhere('description', 'like', '%' . $query . '%');
+        })->paginate(6);
+    }
+
 
     public function stats() : array
     {

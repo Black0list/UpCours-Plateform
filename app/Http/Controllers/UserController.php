@@ -6,7 +6,10 @@ use App\Interfaces\RoleRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\Role;
 use App\Models\Teacher;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -94,5 +97,33 @@ class UserController extends Controller
         $this->userRepo->changeRole($id, $validated['role']);
 
         return redirect()->back();
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'email' => 'required|email',
+            'photo' => 'required|mimes:jpeg,jpg,png',
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+            'phone' => 'required|string',
+        ]);
+
+        dd($validated);
+
+        $user = Auth::user();
+
+        if (!$user || !Hash::check($validated['current_password'], $user->password)) {
+            $user = false;
+        }
+
+        if(!$user){
+            return redirect()->back()->with('failed', 'Current password is incorrect');
+        } else {
+            $this->userRepo->update($validated);
+            return redirect()->back()->with('success', 'Profile updated successfully');
+        }
     }
 }

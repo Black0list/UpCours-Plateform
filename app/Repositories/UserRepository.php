@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserRepository implements UserRepositoryInterface
@@ -16,7 +17,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function all()
     {
-        return User::all();
+        return User::paginate(8);
     }
 
     public function stats()
@@ -80,6 +81,35 @@ class UserRepository implements UserRepositoryInterface
     {
         $user = User::find($id);
         $user->role()->associate(Role::find($role));
+        $user->save();
+    }
+
+
+    public function update($data)
+    {
+        $path = $data['photo']->store('icons', 'public');
+        $user = User::find(Auth::id());
+        $user->firstname = $data['firstname'];
+        $user->lastname = $data['lastname'];
+        $user->email = $data['email'];
+        $user->photo = $path;
+        $user->phone = $data['phone'];
+        $user->password = Hash::make($data['password']);
+        $user->save();
+    }
+
+    public function create($data)
+    {
+        $user = new User();
+        $user->firstname = $data['firstname'];
+        $user->lastname = $data['lastname'];
+        $user->phone = $data['phone'];
+        $user->photo = "icons/user.png";
+        $user->email = $data['email'];
+        $user->password = Hash::make($data['password']);
+        $user->isPending = $data['status'];
+        $user->role()->associate($data['role']);
+
         $user->save();
     }
 }

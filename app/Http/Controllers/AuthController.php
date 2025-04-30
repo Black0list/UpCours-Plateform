@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\AuthRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -62,6 +63,12 @@ class AuthController extends Controller
         if (!$user) {
             return redirect()->back()->with('error', 'The Email or the password is incorrect');
         }
+
+        if ($user->isPending){
+            return redirect()->back()->with('error', 'You are not Verified Yet By the administrator, Try again Later');
+        }
+
+        Auth::login($user);
 
         return redirect('/profile');
     }

@@ -35,32 +35,6 @@
                                     <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Search for a course..." class="pl-10 w-full px-4 py-2.5 rounded-lg border border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
                                 </div>
                             </div>
-
-                            <!-- Categories -->
-                            <div class="mb-6">
-                                <h3 class="text-sm font-medium text-gray-900 mb-3">Categories</h3>
-                                @if(isset($categories) && count($categories) > 0)
-                                    <select name="category_id" id="category"
-                                            class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
-                                        @foreach($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    </select>
-                                @else
-                                    <div class="text-sm text-gray-500 italic">No categories available</div>
-                                @endif
-                            </div>
-
-                            <!-- Apply Filters Button -->
-                            <button type="submit" class="w-full bg-primary text-white py-2.5 px-4 rounded-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors duration-200">
-                                Apply Filters
-                            </button>
-
-                            @if(request()->has('search') || request()->has('categories'))
-                                <a href="/courses" class="mt-3 text-sm text-center block text-primary hover:text-primary/80">
-                                    Clear all filters
-                                </a>
-                            @endif
                         </form>
                     </div>
                 </div>
@@ -117,11 +91,7 @@
                         </div>
 
                         <!-- Pagination -->
-                        @if(method_exists($courses, 'links'))
-                            <div class="mt-10">
-                                {{ $courses->appends(request()->query())->links() }}
-                            </div>
-                        @endif
+                        {{ $courses->links() }}
                     @else
                         <div class="bg-white rounded-xl shadow-md p-10 text-center">
                             <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

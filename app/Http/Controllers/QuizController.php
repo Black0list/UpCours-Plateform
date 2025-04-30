@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use App\Interfaces\QuestionRepositoryInterface;
 use App\Interfaces\QuizRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
-use App\Models\Quiz;
-use App\Models\Student;
-use App\Repositories\QuizRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class QuizController extends Controller
 {
@@ -25,13 +21,13 @@ class QuizController extends Controller
         $this->questionRepo = $questionRepo;
         $this->userRepo = $userRepo;
     }
-    public function findQuizById($courseId,$quizId)
+
+    public function findQuizById($courseId, $quizId)
     {
         $quiz = $this->quizRepo->find($quizId);
         $student = $this->userRepo->findStudent(Auth::id());
 
-        if(!$student->courses->contains($courseId) || $student->quizzes->contains($quiz))
-        {
+        if (!$student->courses->contains($courseId) || $student->quizzes->contains($quiz)) {
             return redirect()->back()->with('failed', 'You are not authorized to access this quiz, You must be Enrolled Or You already passed the Quiz');
         }
         return view('global.quiz', compact('quiz'));
@@ -66,16 +62,12 @@ class QuizController extends Controller
 
         $percentage = ($CorrectAnswersCount / $TotalAnswers) * 100;
 
-        if($percentage >= 80)
-        {
+        if ($percentage >= 80) {
             $badge = $this->quizRepo->findAndSubmit($id, $data['student_id'], true);
         } else {
             $badge = $this->quizRepo->findAndSubmit($id, $data['student_id'], false);
         }
 
-        return response()->json([
-            'data' => [$CorrectAnswersCount, $WrongAnswersCount],
-            'badge' => [$badge]
-        ]);
+        return response()->json(['data' => [$CorrectAnswersCount, $WrongAnswersCount], 'badge' => [$badge]]);
     }
 }
