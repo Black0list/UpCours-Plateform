@@ -1,131 +1,286 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UpCours Enseignant - @yield('title', 'Tableau de bord')</title>
+@extends('layouts.teacher')
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+@section('title', 'Teacher Dashboard')
+@section('page-title', 'Dashboard')
 
-    <!-- Custom Styles -->
-    @yield('styles')
-</head>
-<body class="bg-gray-100 min-h-screen flex">
-    <!-- Sidebar Toggle for Mobile -->
-    <div class="md:hidden fixed top-0 left-0 p-4 z-50">
-        <button id="sidebarToggle" class="text-green-600 focus:outline-none">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-            </svg>
-        </button>
+@section('content')
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <!-- Total Courses -->
+        <div class="bg-white rounded-lg shadow-sm p-6 flex items-center">
+            <div class="rounded-full bg-primary-100 p-3 mr-4">
+                <i class="fas fa-book text-primary-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-gray-500 text-sm">Total Courses</h3>
+                <p class="text-2xl font-bold">{{ $stats['courses'] }}</p>
+            </div>
+        </div>
+
+        <!-- Total Students -->
+        <div class="bg-white rounded-lg shadow-sm p-6 flex items-center">
+            <div class="rounded-full bg-blue-100 p-3 mr-4">
+                <i class="fas fa-users text-blue-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-gray-500 text-sm">Total Students</h3>
+                <p class="text-2xl font-bold">{{ $stats['students'] }}</p>
+            </div>
+        </div>
+
+        <!-- Total Earnings -->
+        <div class="bg-white rounded-lg shadow-sm p-6 flex items-center">
+            <div class="rounded-full bg-yellow-100 p-3 mr-4">
+                <i class="fas fa-dollar-sign text-yellow-600 text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-gray-500 text-sm">Total Earnings</h3>
+                <p class="text-2xl font-bold">${{ $stats['cash'] }}</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="bg-green-800 text-white w-64 flex-shrink-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out fixed h-screen z-40">
-        <div class="p-6">
-            <a href="/" class="text-2xl font-bold">UpCours Enseignant</a>
-        </div>
-        <nav class="mt-6">
-            <div class="px-4 py-2">
-                <h2 class="text-xs uppercase tracking-wide text-green-300 font-semibold">Général</h2>
-                <div class="mt-3 space-y-1">
-                    <a href="/teacher/dashboard" class="group flex items-center px-2 py-2 text-base font-medium rounded-md bg-green-900 text-white">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        Tableau de bord
-                    </a>
-                    <a href="/teacher/profile" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-green-100 hover:bg-green-700">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        Mon Profil
-                    </a>
-                </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Recent Courses -->
+        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="font-bold text-gray-800">Recent Courses</h2>
+                <a href="/teacher/courses" class="text-primary-600 hover:text-primary-800 text-sm font-medium">View All</a>
             </div>
-            <div class="mt-8 px-4 py-2">
-                <h2 class="text-xs uppercase tracking-wide text-green-300 font-semibold">Contenu</h2>
-                <div class="mt-3 space-y-1">
-                    <a href="/teacher/courses" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-green-100 hover:bg-green-700">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                        Mes Cours
-                    </a>
-                    <a href="/teacher/courses/create" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-green-100 hover:bg-green-700">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        Créer un cours
-                    </a>
-                    <a href="/teacher/quiz" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-green-100 hover:bg-green-700">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                        Quiz
-                    </a>
-                </div>
-            </div>
-            <div class="mt-8 px-4 py-2">
-                <h2 class="text-xs uppercase tracking-wide text-green-300 font-semibold">Statistiques</h2>
-                <div class="mt-3 space-y-1">
-                    <a href="/teacher/stats" class="group flex items-center px-2 py-2 text-base font-medium rounded-md text-green-100 hover:bg-green-700">
-                        <svg class="mr-3 h-6 w-6 text-green-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                        Statistiques
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </aside>
-
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Top Navigation -->
-        <header class="bg-white shadow-sm z-10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
-                    <div class="flex">
-                        <div class="flex-shrink-0 hidden md:flex items-center">
-                            <a href="/" class="text-2xl font-bold text-green-600">UpCours</a>
-                        </div>
-                    </div>
-                    <div class="flex items-center">
-                        <div class="ml-3 relative">
-                            <div>
-                                <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" id="user-menu-button">
-                                    <span class="sr-only">Ouvrir le menu utilisateur</span>
-                                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                </button>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <!-- Course 1 -->
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Course" class="w-12 h-12 rounded-lg object-cover mr-4">
+                        <div class="flex-1">
+                            <h3 class="font-medium">Introduction to Web Development</h3>
+                            <div class="flex items-center text-sm text-gray-500">
+                            <span class="flex items-center mr-3">
+                                <i class="fas fa-users mr-1"></i> 45 students
+                            </span>
+                                <span class="flex items-center">
+                                <i class="fas fa-star mr-1 text-yellow-500"></i> 4.9
+                            </span>
                             </div>
                         </div>
+                        <div class="text-right">
+                            <span class="text-green-600 font-medium">$49.99</span>
+                            <div class="text-xs text-gray-500">Published 2 days ago</div>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Course" class="w-12 h-12 rounded-lg object-cover mr-4">
+                        <div class="flex-1">
+                            <h3 class="font-medium">Advanced JavaScript Concepts</h3>
+                            <div class="flex items-center text-sm text-gray-500">
+                            <span class="flex items-center mr-3">
+                                <i class="fas fa-users mr-1"></i> 32 students
+                            </span>
+                                <span class="flex items-center">
+                                <i class="fas fa-star mr-1 text-yellow-500"></i> 4.7
+                            </span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-green-600 font-medium">$69.99</span>
+                            <div class="text-xs text-gray-500">Published 1 week ago</div>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Course" class="w-12 h-12 rounded-lg object-cover mr-4">
+                        <div class="flex-1">
+                            <h3 class="font-medium">Python for Data Science</h3>
+                            <div class="flex items-center text-sm text-gray-500">
+                            <span class="flex items-center mr-3">
+                                <i class="fas fa-users mr-1"></i> 78 students
+                            </span>
+                                <span class="flex items-center">
+                                <i class="fas fa-star mr-1 text-yellow-500"></i> 4.8
+                            </span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-green-600 font-medium">$79.99</span>
+                            <div class="text-xs text-gray-500">Published 2 weeks ago</div>
+                        </div>
+                    </div>
+
+                    <!-- Course 4 -->
+                    <div class="flex items-center p-3 bg-gray-50 rounded-lg">
+                        <img src="/placeholder.svg?height=60&width=60" alt="Course" class="w-12 h-12 rounded-lg object-cover mr-4">
+                        <div class="flex-1">
+                            <h3 class="font-medium">UI/UX Design Fundamentals</h3>
+                            <div class="flex items-center text-sm text-gray-500">
+                            <span class="flex items-center mr-3">
+                                <i class="fas fa-users mr-1"></i> 56 students
+                            </span>
+                                <span class="flex items-center">
+                                <i class="fas fa-star mr-1 text-yellow-500"></i> 4.6
+                            </span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-green-600 font-medium">$59.99</span>
+                            <div class="text-xs text-gray-500">Published 3 weeks ago</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
 
-        <!-- Page Content -->
-        <main class="flex-1 overflow-auto bg-gray-100">
-            <div class="py-6">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <h1 class="text-2xl font-semibold text-gray-900">@yield('page-title', 'Tableau de bord')</h1>
-                </div>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-4">
-                    @yield('content')
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-lg shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="font-bold text-gray-800">Recent Activities</h2>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    <!-- Activity 1 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-primary-100 text-primary-600">
+                                <i class="fas fa-user-plus text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-900">New student enrolled</p>
+                            <p class="text-sm text-gray-500">Sarah Johnson enrolled in "Introduction to Web Development"</p>
+                            <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 2 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-yellow-100 text-yellow-600">
+                                <i class="fas fa-star text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-900">New course review</p>
+                            <p class="text-sm text-gray-500">Michael Brown left a 5-star review on "Advanced JavaScript Concepts"</p>
+                            <p class="text-xs text-gray-400 mt-1">5 hours ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 3 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-comment text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-900">New question</p>
+                            <p class="text-sm text-gray-500">David Wilson asked a question in "Python for Data Science"</p>
+                            <p class="text-xs text-gray-400 mt-1">Yesterday</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 4 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-dollar-sign text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-900">New sale</p>
+                            <p class="text-sm text-gray-500">You earned $79.99 from a sale of "Python for Data Science"</p>
+                            <p class="text-xs text-gray-400 mt-1">2 days ago</p>
+                        </div>
+                    </div>
+
+                    <!-- Activity 5 -->
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 text-purple-600">
+                                <i class="fas fa-certificate text-sm"></i>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-sm font-medium text-gray-900">Course completion</p>
+                            <p class="text-sm text-gray-500">Emily Davis completed "UI/UX Design Fundamentals"</p>
+                            <p class="text-xs text-gray-400 mt-1">3 days ago</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Scripts -->
-    <script>
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('-translate-x-full');
-        });
-    </script>
-    @yield('scripts')
-</body>
-</html>
+    <!-- Upcoming Schedule -->
+    <div class="mt-6 bg-white rounded-lg shadow-sm">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="font-bold text-gray-800">Upcoming Schedule</h2>
+        </div>
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Students</th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Schedule 1 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">Introduction to Web Development</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Live Session</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 18, 2025</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10:00 AM - 11:30 AM</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">45</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="#" class="text-primary-600 hover:text-primary-900">Start</a>
+                        </td>
+                    </tr>
+
+                    <!-- Schedule 2 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">Advanced JavaScript Concepts</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Q&A Session</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 19, 2025</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2:00 PM - 3:00 PM</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">32</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="#" class="text-primary-600 hover:text-primary-900">Start</a>
+                        </td>
+                    </tr>
+
+                    <!-- Schedule 3 -->
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">Python for Data Science</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">Workshop</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Apr 20, 2025</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1:00 PM - 3:00 PM</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">78</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="#" class="text-primary-600 hover:text-primary-900">Start</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection

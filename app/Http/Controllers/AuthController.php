@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Interfaces\AuthRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -27,9 +28,23 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'phone' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|string'
+        ],
+        [
+            'firstname.required' => 'Firstname is required',
+            'lastname.required' => 'Lastname is required',
+            'phone.required' => 'Phone is required',
+            'email.required' => 'Email is required',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 6 characters',
+            'password.confirmed' => 'Password does not match',
+            'role.required' => 'Role is required',
+            'email.unique' => 'Email is already taken'
         ]);
 
         $this->auth->register($validated);
@@ -40,19 +55,28 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'email' => 'required|email',
-            'password' => 'required',
+            'password' => 'required|string',
         ]);
 
-        if (!$this->auth->login($data)) {
-            return redirect()->back()->with('failed', 'The Email or the password is incorrect');
+        $user = $this->auth->login($data);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'The Email or the password is incorrect');
         }
 
-        return redirect('/rooms');
+        if ($user->isPending){
+            return redirect()->back()->with('error', 'You are not Verified Yet By the administrator, Try again Later');
+        }
+
+        Auth::login($user);
+
+        return redirect('/profile');
     }
 
     public function logout()
     {
         $this->auth->logout();
-        return redirect('/login');
+        return redirect('/');
     }
+
 }

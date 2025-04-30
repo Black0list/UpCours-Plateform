@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Interfaces\AuthRepositoryInterface;
+use App\Interfaces\RoleRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,26 +13,35 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthRepository implements AuthRepositoryInterface
 {
+    protected $RoleRepository;
+    protected $UserRepository;
+
+    public function __construct(RoleRepositoryInterface $RoleRepository, UserRepositoryInterface $UserRepository)
+    {
+        $this->RoleRepository = $RoleRepository;
+        $this->UserRepository = $UserRepository;
+    }
     public function register(array $data)
     {
-        $role = Role::whereRaw('LOWER(role_name) = ?', ['client'])->first();
+        $role = Role::whereRaw('LOWER(role_name) = ?', $data['role'])->first();
 
         if (!$role) {
-            $role = Role::create([
-                'role_name' => 'client',
-                'role_description' => ' '
-            ]);
+            $role = $this->RoleRepository->create($data['role'], "Description of {$data['role']}");
         }
 
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role_id' => $role->id
-        ]);
+        $isPending = false;
+        if(strtolower($role->role_name) == 'teacher')
+        {
+            $isPending = true;
+        }
+
+        $data['status'] = $isPending;
+        $data['role'] = $role;
+
+        $this->UserRepository->create($data);
     }
 
-    public function login(array $data)
+    public function login($data)
     {
         $user = User::where('email', $data['email'])->first();
 
@@ -38,12 +49,12 @@ class AuthRepository implements AuthRepositoryInterface
             return false;
         }
 
-        Auth::login($user);
-        return true;
+        return $user;
     }
 
     public function logout()
     {
         Auth::logout();
     }
+
 }

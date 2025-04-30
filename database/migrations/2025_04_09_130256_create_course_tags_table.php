@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('password_resets', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+        Schema::create('course_tag', function (Blueprint $table) {
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade')->cascadeOnUpdate();
+            $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('password_resets');
+        Schema::dropIfExists('course_tags');
     }
 };

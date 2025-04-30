@@ -15,16 +15,22 @@ class UserFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
+        $photos = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'user.png'];
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            'firstname' => $this->faker->firstName,
+            'lastname' => $this->faker->lastName,
+            'phone' => $this->faker->phoneNumber,
+            'photo' => 'icons/' . $this->faker->randomElement($photos),
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('password'),
+            'isPending' => $this->faker->boolean(30),
+            'role_id' => \App\Models\Role::factory(),
         ];
     }
+
+
 
     /**
      * Indicate that the model's email address should be unverified.

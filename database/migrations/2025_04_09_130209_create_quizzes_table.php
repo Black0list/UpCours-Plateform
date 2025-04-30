@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('duration');
             $table->foreignId('course_id')->constrained('courses')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('badge_id')->constrained('badges')->nullOnDelete()->onUpdate('cascade');
             $table->timestamps();
         });
     }
