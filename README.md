@@ -1,66 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# E-learning Application with Laravel & MySQL
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ce projet est une plateforme d’apprentissage en ligne qui permet aux utilisateurs de s’inscrire à des cours, de regarder des vidéos de formation, de compléter des quiz et d’obtenir des certificats. Elle offre une interface conviviale à la fois pour les étudiants et les instructeurs, permettant la création de cours, la gestion de contenu et le suivi de la progression.
+## Prérequis
 
-## About Laravel
+- PHP >= 8.0
+- Composer
+- Laravel 9
+- MySQL / PostgreSQL
+- Node.js & npm
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Installation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Cloner le projet
+```bash
+git clone https://github.com/votre-utilisateur/votre-projet.git
+cd votre-projet
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Installer les dépendances
+Installez les dépendances pour Laravel via Composer et les dépendances frontend via npm :
+```bash
+composer install
+npm install && npm run dev
+```
 
-## Learning Laravel
+### 3. Configurer l'environnement
+Copiez le fichier `.env.example` et renommez-le `.env` :
+```bash
+cp .env.example .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Modifiez le fichier `.env` pour configurer la base de données MySQL :
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nom_de_la_base
+DB_USERNAME=nom_utilisateur
+DB_PASSWORD=mot_de_passe
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Générez une clé d'application Laravel :
+```bash
+php artisan key:generate
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 4. Exécuter les migrations
+Créez les tables nécessaires dans la base de données :
+```bash
+php artisan migrate --seed
+```
 
-## Laravel Sponsors
+### 5. Lancer le serveur de développement
+Démarrez le serveur local :
+```bash
+php artisan serve
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+L'application sera accessible à cette adresse : `http://localhost:8000`.
 
-### Premium Partners
+## Fonctionnalités
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+### 1. Authentification par Sessions
+- Inscription & connexion sécurisées avec gestion des sessions.
+- Middleware pour gérer l'accès aux fonctionnalités protégées.
 
-## Contributing
+### 2. Gestion des Données
+- Interaction facile avec la base de données via Eloquent ORM.
+- Création, lecture, mise à jour et suppression des enregistrements.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Génération de PDF avec DomPDF
+- Génération dynamique de documents PDF intégrée.
 
-## Code of Conduct
+### 4. Gestion des E-mails
+- Envoi d'e-mails via Symfony Mailer.
+- Personnalisation des modèles d'e-mail.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 👨‍💻 Auteur
 
-## License
+Ce projet a été développé par **HADOUI ABDELKEBIR**.  
+N'hésitez pas à me suivre sur GitHub et à contribuer à ce projet ! 🚀
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+📧 Contact : contact.abdelkebir@gmail.com
+🔗 GitHub : [Blacklist](https://github.com/Black0list)
