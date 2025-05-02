@@ -101,17 +101,20 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
+//        dd($request);
         $validated = $request->validate([
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            'email' => 'required|email',
-            'photo' => 'required|mimes:jpeg,jpg,png',
+            'email' => 'email',
+            'photo' => 'mimes:jpeg,jpg,png',
             'current_password' => 'required|string',
-            'password' => 'required|string|min:8|confirmed',
-            'phone' => 'required|string',
+            'password' => 'string|min:8|confirmed',
+            'phone' => 'string',
+        ],
+        [
+            'current_password.required' => 'Current Password is required.',
         ]);
 
-        dd($validated);
 
         $user = Auth::user();
 

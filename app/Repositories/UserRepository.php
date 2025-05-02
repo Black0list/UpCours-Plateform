@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Student;
 use App\Models\Teacher;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -87,14 +88,21 @@ class UserRepository implements UserRepositoryInterface
 
     public function update($data)
     {
-        $path = $data['photo']->store('icons', 'public');
         $user = User::find(Auth::id());
-        $user->firstname = $data['firstname'];
-        $user->lastname = $data['lastname'];
-        $user->email = $data['email'];
-        $user->photo = $path;
-        $user->phone = $data['phone'];
-        $user->password = Hash::make($data['password']);
+
+        $user->firstname = $data['firstname'] ?? $user->firstname;
+        $user->lastname  = $data['lastname'] ?? $user->lastname;
+        $user->email     = $data['email'] ?? $user->email;
+        $user->phone     = $data['phone'] ?? $user->phone;
+
+        if (!empty($data['password'])) {
+            $user->password = Hash::make($data['password']);
+        }
+
+        if (isset($data['photo']) && $data['photo'] instanceof UploadedFile) {
+            $user->photo = $data['photo']->store('icons', 'public');
+        }
+
         $user->save();
     }
 
