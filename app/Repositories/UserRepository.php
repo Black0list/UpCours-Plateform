@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
+use App\Models\Admin;
 use App\Models\Course;
 use App\Models\Role;
 use App\Models\Student;
@@ -73,9 +74,15 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    public function findStudent($id)
+    public function find($id, $role)
     {
-        return Student::find($id);
+        if ($role == 'student') {
+            return Student::find($id);
+        } else if ($role == 'teacher') {
+            return Teacher::find($id);
+        } else if($role == 'admin') {
+            return Admin::find($id);
+        }
     }
 
     public function changeRole($id, $role)

@@ -52,7 +52,7 @@
                                 Unsubscribe
                             </button>
                         @endif
-                            <a href="/course/{{$course->id}}/quiz/{{$course->quizzes[0]->id}}" id="quiz" class="w-full bg-white text-center text-indigo-600 border border-indigo-600 py-3 px-4 rounded-md hover:bg-indigo-50  font-medium">
+                            <a href="/course/{{$course->id}}/quiz/{{$course->quizzes[0]->id}}" onclick="return confirm('Please Before Take the Quiz, Make sure you are Ready, You have Only 1 change to passe the Quiz')" id="quiz" class="w-full bg-white text-center text-indigo-600 border border-indigo-600 py-3 px-4 rounded-md hover:bg-indigo-50  font-medium">
                                 Take Quiz
                             </a>
                     </div>

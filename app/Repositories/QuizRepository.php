@@ -59,7 +59,7 @@ class QuizRepository implements QuizRepositoryInterface
     public function findAndSubmit($id, $studentId, $isBadge)
     {
         $quiz = $this->find($id);
-        $student = $this->userRepository->findStudent($studentId);
+        $student = $this->userRepository->find($studentId, 'student');
 
         if (!$student->quizzes->contains($quiz)) {
             $student->quizzes()->attach($quiz);
