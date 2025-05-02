@@ -41,7 +41,7 @@ class CourseController extends Controller
 
     public function myCourses()
     {
-        $student = $this->userRepository->findStudent(Auth::id());
+        $student = $this->userRepository->find(Auth::id(), 'student');
         $courses = $student->courses;
         return view('global.mycourses', compact('courses'));
     }
@@ -58,7 +58,8 @@ class CourseController extends Controller
     public function Teacherdashboard()
     {
         $stats = $this->courseRepository->stats();
-        return view('teacher.dashboard', compact('stats'));
+        $user = $this->userRepository->find(Auth::id(), 'teacher');
+        return view('teacher.dashboard', compact('stats', 'user'));
     }
 
     //Home courses
@@ -76,7 +77,7 @@ class CourseController extends Controller
     // Teacher index
     public function main()
     {
-        $user = Teacher::find(Auth::id());
+        $user = $this->userRepository->find(Auth::id(), 'teacher');
         $categories = $this->categoryRepository->all();
         $stats = $this->courseRepository->stats();
         return view('teacher.courses', compact('user', 'categories', 'stats'));

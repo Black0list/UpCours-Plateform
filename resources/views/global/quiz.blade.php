@@ -341,9 +341,9 @@
                                 <img src="${baseUrl}/${data.badge[0]['icon']}" alt="">
                             </div>
                             <h4 class="text-lg font-bold text-gray-900">${data.badge[0]['badge_name']}</h4>
-                            <p class="text-sm text-gray-600">Earned on ${formattedDate}</p>`
+                            <p class="text-sm text-gray-600">Earned on ${formattedDate}</p>
 
-                            resultSection.innerHTML += `                <form action="/generate" method="POST" class="inline-block">
+                <form action="/generate" method="POST" class="inline-block">
                     @csrf
                             <input type="hidden" name="course" value="{{ $quiz->course->id }}">
                     <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-300">

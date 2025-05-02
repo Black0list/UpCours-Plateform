@@ -25,7 +25,7 @@ class QuizController extends Controller
     public function findQuizById($courseId, $quizId)
     {
         $quiz = $this->quizRepo->find($quizId);
-        $student = $this->userRepo->findStudent(Auth::id());
+        $student = $this->userRepo->find(Auth::id(), 'student');
 
         if (!$student->courses->contains($courseId) || $student->quizzes->contains($quiz)) {
             return redirect()->back()->with('failed', 'You are not authorized to access this quiz, You must be Enrolled Or You already passed the Quiz');
