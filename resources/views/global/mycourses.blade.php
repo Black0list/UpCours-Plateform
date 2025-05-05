@@ -4,6 +4,16 @@
 @section('meta_description', 'Learn to create complete web applications with modern technologies. This course covers HTML, CSS, JavaScript, PHP and MySQL.')
 
 @section('content')
+    <div class="ml-20 p-16">
+        @if($courses->count() <= 0)
+            <div class="bg-white rounded-xl shadow-md p-10 text-center">
+                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="mt-4 text-lg font-medium text-gray-900">No courses found</h3>
+            </div>
+        @endif
+    </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 ml-20 p-16">
                     @foreach($courses as $course)
                         <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full transition-transform duration-300 hover:shadow-xl hover:-translate-y-1">
