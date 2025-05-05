@@ -17,6 +17,9 @@ Route::middleware(['web'])->group(function () {
     // ===== Public Pages =====
     Route::get('/', [CourseController::class, 'index'])->name('home');
     Route::get('/courses', [CourseController::class, 'home'])->name('courses');
+    Route::fallback(function () {
+        return redirect('/');
+    });
 
     // ===== Auth Pages =====
     Route::middleware('guest')->group(function () {
