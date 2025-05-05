@@ -115,7 +115,12 @@ class UserRepository implements UserRepositoryInterface
 
     public function create($data)
     {
-        $user = new User();
+        $roleName = strtolower($data['role']->role_name);
+
+        $className = 'App\\Models\\' . ucfirst($roleName);
+
+        $user = new $className();
+
         $user->firstname = $data['firstname'];
         $user->lastname = $data['lastname'];
         $user->phone = $data['phone'];
