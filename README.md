@@ -13,8 +13,8 @@ Ce projet est une plateforme d’apprentissage en ligne qui permet aux utilisate
 
 ### 1. Cloner le projet
 ```bash
-git clone https://github.com/votre-utilisateur/votre-projet.git
-cd votre-projet
+git clone https://github.com/Black0list/UpCours-Plateform.git
+cd UpCours-Plateform
 ```
 
 ### 2. Installer les dépendances
