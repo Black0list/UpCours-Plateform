@@ -32,7 +32,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                         @foreach($roles as $role)
                             <tr>
-                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $role->role_name }}</td>
+                                <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ $role->role_name ?? 'no role' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-500">{{ $role->users->count() }}</td>
                                 <td class="px-6 py-4 text-right flex justify-end gap-2">
                                     <button title="Edit" onclick="editRole(this)"
