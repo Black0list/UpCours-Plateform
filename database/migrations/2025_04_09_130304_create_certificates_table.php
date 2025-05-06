@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('certificate_number');
             $table->foreignId('student_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('course_id')->constrained('courses')->nullOnDelete()->onUpdate('cascade');
+            $table->foreignId('course_id')->nullable()->constrained('courses')->nullOnDelete()->onUpdate('cascade');
             $table->timestamps();
         });
     }

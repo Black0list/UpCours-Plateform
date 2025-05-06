@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('isPending');
-            $table->foreignId('role_id')->constrained()->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('role_id')->nullable()->constrained()->nullOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
