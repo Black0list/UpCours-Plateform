@@ -4,73 +4,94 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use App\Models\{
+    Role, Category, Tag, User, Student, Course,
+    Badge, Quiz, Question, Choice, Certificate, Contact
+};
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // Roles
-        \App\Models\Role::insert([
+        $this->seedRoles();
+        $categories = $this->seedCategories();
+        $tags = $this->seedTags();
+        $teachers = $this->seedTeachers();
+        $students = $this->seedStudents();
+        $courses = $this->seedCourses($teachers, $categories, $tags);
+        $badges = $this->seedBadges();
+        $quizzes = $this->seedQuizzes($courses, $badges);
+        $this->attachStudentsToCourses($students, $courses);
+        $this->attachBadgesToStudents($students, $badges);
+        $this->attachQuizzesToStudents($students, $quizzes);
+        $this->generateCertificates($students);
+
+        $this->call([AdminUserSeeder::class]);
+
+        echo "✅ Database seeding complete with nested relations, local files, and pivot tables.\n";
+    }
+
+    private function seedRoles()
+    {
+        Role::insert([
             ['role_name' => 'admin'],
             ['role_name' => 'teacher'],
             ['role_name' => 'student'],
         ]);
+    }
 
-        // Categories
-        $categories = collect();
-        for ($i = 0; $i < 5; $i++) {
-            $categories->push(\App\Models\Category::create([
-                'name' => fake()->jobTitle(),
-                'description' => fake()->sentence(),
-            ]));
-        }
+    private function seedCategories()
+    {
+        return collect(range(1, 5))->map(fn() => Category::create([
+            'name' => fake()->jobTitle(),
+            'description' => fake()->sentence(),
+        ]));
+    }
 
-        // Tags
-        $tags = collect();
-        for ($i = 0; $i < 10; $i++) {
-            $tags->push(\App\Models\Tag::create([
-                'name' => fake()->jobTitle(),
-            ]));
-        }
+    private function seedTags()
+    {
+        return collect(range(1, 10))->map(fn() => Tag::create([
+            'name' => fake()->jobTitle(),
+        ]));
+    }
 
-        // Teachers
-        $teachers = collect();
+    private function seedTeachers()
+    {
         $pics = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'user.png'];
-        for ($i = 0; $i < 5; $i++) {
-            $teachers->push(\App\Models\User::create([
-                'firstname' => fake()->firstName(),
-                'lastname' => fake()->lastName(),
-                'phone' => fake()->phoneNumber(),
-                'email' => fake()->unique()->safeEmail(),
-                'photo' => 'icons/' . fake()->randomElement($pics),
-                'password' => bcrypt('password'),
-                'isPending' => false,
-                'role_id' => 2, // teacher
-            ]));
-        }
+        return collect(range(1, 5))->map(fn() => User::create([
+            'firstname' => fake()->firstName(),
+            'lastname' => fake()->lastName(),
+            'phone' => fake()->phoneNumber(),
+            'email' => fake()->unique()->safeEmail(),
+            'photo' => 'icons/' . fake()->randomElement($pics),
+            'password' => bcrypt('password'),
+            'isPending' => false,
+            'role_id' => 2,
+        ]));
+    }
 
-        // Students
-        $students = collect();
-        for ($i = 0; $i < 20; $i++) {
-            $students->push(\App\Models\Student::create([
-                'firstname' => fake()->firstName(),
-                'lastname' => fake()->lastName(),
-                'phone' => fake()->phoneNumber(),
-                'email' => fake()->unique()->safeEmail(),
-                'photo' => 'icons/' . fake()->randomElement($pics),
-                'password' => bcrypt('password'),
-                'isPending' => false,
-                'role_id' => 3, // student
-            ]));
-        }
+    private function seedStudents()
+    {
+        $pics = ['avatar_1.png', 'avatar_2.png', 'avatar_3.png', 'user.png'];
+        return collect(range(1, 20))->map(fn() => Student::create([
+            'firstname' => fake()->firstName(),
+            'lastname' => fake()->lastName(),
+            'phone' => fake()->phoneNumber(),
+            'email' => fake()->unique()->safeEmail(),
+            'photo' => 'icons/' . fake()->randomElement($pics),
+            'password' => bcrypt('password'),
+            'isPending' => false,
+            'role_id' => 3,
+        ]));
+    }
 
-        // Courses
-        $courses = collect();
+    private function seedCourses($teachers, $categories, $tags)
+    {
         $images = ['image_1.jpg', 'image_2.jpg', 'image_3.jpg', 'image_4.jpg'];
         $contents = ['content_1.pdf', 'content_2.pdf', 'content_3.pdf', 'content_4.pdf'];
 
-        foreach (range(1, 10) as $_) {
-            $course = \App\Models\Course::create([
+        return collect(range(1, 10))->map(function () use ($teachers, $categories, $tags, $images, $contents) {
+            $course = Course::create([
                 'title' => fake()->sentence(3),
                 'description' => fake()->paragraph(),
                 'image' => 'courses/images/' . fake()->randomElement($images),
@@ -79,79 +100,123 @@ class DatabaseSeeder extends Seeder
                 'teacher_id' => $teachers->random()->id,
                 'category_id' => $categories->random()->id,
             ]);
-            $courses->push($course);
+            $course->tags()->attach($tags->random(rand(1, 3))->pluck('id'));
+            return $course;
+        });
+    }
 
-            // Attach 1–3 tags per course
-            $course->tags()->attach($tags->random(rand(1, 3))->pluck('id')->toArray());
-        }
-
-        // Enroll students in 1–3 courses
-        foreach ($students as $student) {
-            $student->courses()->attach($courses->random(rand(1, 3))->pluck('id')->toArray());
-        }
-
-        // Badges
-        $badges = collect();
+    private function seedBadges()
+    {
         $icons = ['badge_1.png', 'badge_2.png', 'badge_3.png', 'badge_4.png'];
-        for ($i = 0; $i < 5; $i++) {
-            $badges->push(\App\Models\Badge::create([
-                'badge_name' => fake()->word(),
-                'icon' => 'badges/' . fake()->randomElement($icons),
-            ]));
-        }
+        return collect(range(1, 5))->map(fn() => Badge::create([
+            'badge_name' => fake()->word(),
+            'icon' => 'badges/' . fake()->randomElement($icons),
+        ]));
+    }
 
-        // Quizzes + Questions + Choices
-        $quizzes = collect();
-        foreach ($courses as $course) {
-            $quiz = \App\Models\Quiz::create([
+    private function seedQuizzes($courses, $badges)
+    {
+        return $courses->map(function ($course) use ($badges) {
+            $quiz = Quiz::create([
                 'title' => fake()->sentence(2),
                 'duration' => rand(10, 60),
                 'course_id' => $course->id,
                 'badge_id' => $badges->random()->id,
             ]);
-            $quizzes->push($quiz);
+            $this->createQuizQuestions($quiz);
+            return $quiz;
+        });
+    }
 
-            foreach (range(1, 3) as $_) {
-                $question = \App\Models\Question::create([
-                    'title' => fake()->sentence(6),
+    private function createQuizQuestions($quiz)
+    {
+        $questionBank = [
+            [
+                'title' => 'What is the capital of France?',
+                'choices' => ['London', 'Paris', 'Berlin', 'Madrid'],
+                'correct' => 'Paris',
+            ],
+            [
+                'title' => 'What is the most used programming language in web development?',
+                'choices' => ['Java', 'JavaScript', 'Ruby', 'C++'],
+                'correct' => 'JavaScript',
+            ],
+            [
+                'title' => 'What does CSS stand for?',
+                'choices' => ['Cascading Style Sheets', 'Creative Style Sheets', 'Cascading Simple Sheets', 'Common Style Sheets'],
+                'correct' => 'Cascading Style Sheets',
+            ],
+            [
+                'title' => 'Which of the following is a frontend JavaScript framework?',
+                'choices' => ['Django', 'React', 'Flask', 'Laravel'],
+                'correct' => 'React',
+            ],
+            [
+                'title' => 'What is the primary language used for Android development?',
+                'choices' => ['Swift', 'Kotlin', 'C#', 'JavaScript'],
+                'correct' => 'Kotlin',
+            ],
+            [
+                'title' => 'Which company developed the Laravel framework?',
+                'choices' => ['Facebook', 'Google', 'Taylor Otwell', 'Microsoft'],
+                'correct' => 'Taylor Otwell',
+            ],
+        ];
+
+        $selected = collect($questionBank)->random(3);
+        foreach ($selected as $data) {
+            // Validate that the question has choices before creating
+            if (count($data['choices']) >= 2) {
+                $question = Question::create([
+                    'title' => $data['title'],
                     'quiz_id' => $quiz->id,
                 ]);
 
-                $correctIndex = rand(1, 4);
-                foreach (range(1, 4) as $i) {
-                    \App\Models\Choice::create([
+                foreach ($data['choices'] as $text) {
+                    Choice::create([
                         'question_id' => $question->id,
-                        'text' => fake()->sentence(3),
-                        'is_correct' => $i === $correctIndex,
+                        'text' => $text,
+                        'is_correct' => $text === $data['correct'],
                     ]);
                 }
+            } else {
+                // Skip the question if it has fewer than 2 choices
+                continue;
             }
         }
+    }
 
-        // Attach quizzes to students (quiz_student pivot)
+    private function attachStudentsToCourses($students, $courses)
+    {
         foreach ($students as $student) {
-            $student->quizzes()->attach($quizzes->random(rand(1, 3))->pluck('id')->toArray());
+            $student->courses()->attach($courses->random(rand(1, 3))->pluck('id'));
         }
+    }
 
-        // Attach badges to students (badge_user pivot)
+    private function attachQuizzesToStudents($students, $quizzes)
+    {
         foreach ($students as $student) {
-            $student->badges()->attach($badges->random(rand(1, 2))->pluck('id')->toArray());
+            $student->quizzes()->attach($quizzes->random(rand(1, 3))->pluck('id'));
         }
+    }
 
-        // Create certificates
+    private function attachBadgesToStudents($students, $badges)
+    {
+        foreach ($students as $student) {
+            $student->badges()->attach($badges->random(rand(1, 2))->pluck('id'));
+        }
+    }
+
+    private function generateCertificates($students)
+    {
         foreach ($students as $student) {
             foreach ($student->courses as $course) {
-                \App\Models\Certificate::create([
+                Certificate::create([
                     'certificate_number' => strtoupper(Str::random(10)),
                     'student_id' => $student->id,
                     'course_id' => $course->id,
                 ]);
             }
         }
-        $this->call([
-            AdminUserSeeder::class,
-        ]);
-
-        echo "✅ Database seeding complete with nested relations, local files, and pivot tables.\n";
     }
 }

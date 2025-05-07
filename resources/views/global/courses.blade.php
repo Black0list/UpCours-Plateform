@@ -56,7 +56,7 @@
                             @foreach($courses as $course)
                                 <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col h-full">
                                     <div class="relative">
-                                        <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
+                                        <img src="{{ url('storage/' . $course->image) }}" alt="{{ $course->title }}" class="w-full h-48 object-cover">
                                         @if(isset($course->category))
                                             <div class="absolute top-4 left-4">
                                                 <span class="px-3 py-1.5 text-xs font-semibold bg-white/90 text-primary rounded-full shadow-sm">

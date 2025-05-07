@@ -91,7 +91,7 @@
                                     <div class="">
                                         <div class="text-base font-medium text-gray-800">{{ Auth::user()->full_name }}</div>
                                     </div>
-                                    <img class="h-8 w-8 rounded-full" src="{{ asset('storage/' . Auth::user()->photo) }}" alt="Userprofile">
+                                    <img class="h-8 w-8 rounded-full" src="{{ url('storage/' . Auth::user()->photo) }}" alt="Userprofile">
                                 </button>
                             </div>
 
@@ -111,7 +111,7 @@
                     {{-- User profile for mobile --}}
                     <button type="button" id="mobile-profile-button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-2">
                         <span class="sr-only">Open user menu</span>
-                        <img class="h-8 w-8 rounded-full" src="{{ asset('storage/' . Auth::user()->photo) }}" alt="Userprofile">
+                        <img class="h-8 w-8 rounded-full" src="{{ url('storage/' . Auth::user()->photo) }}" alt="Userprofile">
                     </button>
                 @endauth
 
