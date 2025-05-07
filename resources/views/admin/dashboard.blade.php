@@ -97,7 +97,7 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900">{{ $course->title }}</div>
-                                    <div class="text-xs text-gray-500">{{ $course->category->name }}</div>
+                                    <div class="text-xs text-gray-500">{{ $course->category->name ?? 'uncategorized' }}</div>
                                 </td>
 {{--                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $course->teacher->firstname }}</td>--}}
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${{ $course->price }}</td>

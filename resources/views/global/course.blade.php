@@ -182,6 +182,7 @@
             const notification = document.createElement('div');
             notification.className = 'notification';
             notification.textContent = message;
+            notification.classList.add('bg-green-500');
 
             const style = document.createElement('style');
             style.textContent = `
@@ -189,7 +190,6 @@
                 position: fixed;
                 top: 20px;
                 right: 20px;
-                background: 	#BEBEBE;
                 color: white;
                 padding: 1rem 2rem;
                 border-radius: 0.75rem;
@@ -248,17 +248,18 @@
             })
                 .then(async response => {
                     const data = await response.json();
+                    console.log(data);
                     if (response.status === 200) {
                         animate(button)
                     } else {
-                        showNotification(data.message + 'dwada' || "An error occurred while enrolling course.");
+                        showNotification(data.message || "An error occurred while enrolling course.");
                     }
 
                     console.log('Status:', response.status);
                     console.log('Data:', data);
                 })
                 .catch(error => {
-                    showNotification("An error occurred while enrolling course.");
+                    showNotification(error.message || "An error occurred while enrolling course.");
                     console.error('Error:', error);
                 });
         }

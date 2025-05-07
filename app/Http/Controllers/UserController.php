@@ -7,6 +7,8 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Models\Role;
 use App\Models\Teacher;
 use App\Models\User;
+use App\Policies\StudentPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -72,6 +74,15 @@ class UserController extends Controller
 
     public function enroll(Request $request)
     {
+
+//        try {
+//            $this->authorize('access', StudentPolicy::class);
+//        } catch (AuthorizationException $e) {
+//            return response()->json([
+//                'message' => 'Only students are allowed to access this resource.'
+//            ], 403);
+//        }
+
         $studentId = $request->input('studentId');
         $courseId = $request->input('courseId');
 
@@ -82,6 +93,7 @@ class UserController extends Controller
         try {
             $this->userRepo->enroll($data);
         } catch (\Exception $exception) {
+            Log::info($exception->getMessage());
             return response()->json(['error' => $exception->getMessage()]);
         }
 
@@ -105,16 +117,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            'email' => 'email',
+            'email' => 'required|email',
             'photo' => 'mimes:jpeg,jpg,png',
-            'current_password' => 'required|string',
-            'password' => 'string|min:8|confirmed',
+            'current_password' => 'required_with:password|string',
+            'password' => 'nullable|string|min:8|confirmed',
             'phone' => 'string',
-        ],
-        [
-            'current_password.required' => 'Current Password is required.',
         ]);
-
 
         $user = Auth::user();
 
