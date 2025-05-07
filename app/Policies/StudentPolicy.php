@@ -10,8 +10,7 @@ class StudentPolicy
 {
     public function access(Student $student): bool
     {
-        Log::info('Unauthorized access attempt. Role: ' . $student->role->role_name);
-        dd($student);
+//        Log::info('Unauthorized access attempt. Role: ' . $student->role->role_name);
         if ($student->role->role_name !== 'student') {
             Log::info('Unauthorized access attempt. Role: ' . $student->role->role_name);
             return false;
